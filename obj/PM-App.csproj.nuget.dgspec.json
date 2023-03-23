@@ -1,0 +1,70 @@
+{
+  "format": 1,
+  "restore": {
+    "T:\\APIPO\\Dev\\C#\\PM-App\\PM-App.csproj": {}
+  },
+  "projects": {
+    "T:\\APIPO\\Dev\\C#\\PM-App\\PM-App.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "T:\\APIPO\\Dev\\C#\\PM-App\\PM-App.csproj",
+        "projectName": "PM-App",
+        "projectPath": "T:\\APIPO\\Dev\\C#\\PM-App\\PM-App.csproj",
+        "packagesPath": "C:\\Users\\apipo\\.nuget\\packages\\",
+        "outputPath": "T:\\APIPO\\Dev\\C#\\PM-App\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\apipo\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net7.0-windows"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net7.0-windows7.0": {
+            "targetAlias": "net7.0-windows",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net7.0-windows7.0": {
+          "targetAlias": "net7.0-windows",
+          "dependencies": {
+            "System.Data.SQLite": {
+              "target": "Package",
+              "version": "[1.0.117, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            },
+            "Microsoft.WindowsDesktop.App.WindowsForms": {
+              "privateAssets": "none"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.102\\RuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}
