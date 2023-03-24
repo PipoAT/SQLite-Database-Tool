@@ -17,29 +17,35 @@ public partial class Form1 : Form
         var EmployeePW = this.textBoxPW.Text;
 
 
-
-        // Connection string to SQLite database file
-        string connectionString = "Data Source=Users.db;Version=3;";
-
-        // Create a new connection object
-        SQLiteConnection connection = new SQLiteConnection(connectionString);
-
-        // Open the connection to the database
-        connection.Open();
-
-        // INSERT INTO TMANUAL, id, info, bytes SQL
-        using (SQLiteCommand cmd = new SQLiteCommand())
+        if (EmployeeID == "" || EmployeeUser == "" || EmployeePW == "")
         {
-            cmd.Connection = connection;
-            cmd.CommandText = "INSERT INTO TUSER (PID, NAME, PW) VALUES (@PID, @NAME, @PW)";
-            cmd.Parameters.Add(new SQLiteParameter("@PID", EmployeeID));
-            cmd.Parameters.Add(new SQLiteParameter("@NAME", EmployeeUser));
-            cmd.Parameters.Add(new SQLiteParameter("@PW", EmployeePW));
-            cmd.ExecuteNonQuery();
+            MessageBox.Show("Please Input Data into All Fields and Submit Again", "ATTENTION", MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }
 
-        connection.Close();
+        else
+        {
+            // Connection string to SQLite database file
+            string connectionString = "Data Source=Users.db;Version=3;";
 
+            // Create a new connection object
+            SQLiteConnection connection = new SQLiteConnection(connectionString);
+
+            // Open the connection to the database
+            connection.Open();
+
+            // INSERT INTO TMANUAL, id, info, bytes SQL
+            using (SQLiteCommand cmd = new SQLiteCommand())
+            {
+                cmd.Connection = connection;
+                cmd.CommandText = "INSERT INTO TUSER (PID, NAME, PW) VALUES (@PID, @NAME, @PW)";
+                cmd.Parameters.Add(new SQLiteParameter("@PID", EmployeeID));
+                cmd.Parameters.Add(new SQLiteParameter("@NAME", EmployeeUser));
+                cmd.Parameters.Add(new SQLiteParameter("@PW", EmployeePW));
+                cmd.ExecuteNonQuery();
+            }
+
+            connection.Close();
+        }
 
     }
 
@@ -104,36 +110,48 @@ public partial class Form1 : Form
         var ManualName = this.textBoxManualName.Text;
         var ManualID = this.textBoxManualID.Text;
 
-        using (FileStream f = new FileStream(filePath, FileMode.Open))
+        if (ManualName == "" || ManualID == "" || filePath == "" || filePathImg == "")
         {
-            using(FileStream fi = new FileStream(filePathImg, FileMode.Open)) {
 
-            BinaryReader binaryReader = new BinaryReader(f);
-            var ImageData = binaryReader.ReadBytes((int)f.Length);
-            BinaryReader binaryReaderimg = new BinaryReader(fi);
-            var ImageDataImg = binaryReaderimg.ReadBytes((int)fi.Length);
-            // Connection string to SQLite database file
-            string connectionString = "Data Source=Manuals.db;Version=3;";
+            MessageBox.Show("Please Input Data into All Fields and Submit Again", "ATTENTION", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 
-            // Create a new connection object
-            SQLiteConnection connection = new SQLiteConnection(connectionString);
+        }
 
-            // Open the connection to the database
-            connection.Open();
+        else
+        {
 
-            // INSERT INTO TMANUAL, id, info, bytes SQL
-            using (SQLiteCommand cmd = new SQLiteCommand())
+            using (FileStream f = new FileStream(filePath, FileMode.Open))
             {
-                cmd.Connection = connection;
-                cmd.CommandText = "INSERT INTO TMANUAL (PID, NAME, DATA, IMAGE) VALUES (@PID, @NAME, @DATA, @IMAGE)";
-                cmd.Parameters.Add(new SQLiteParameter("@PID", ManualID));
-                cmd.Parameters.Add(new SQLiteParameter("@NAME", ManualName));
-                cmd.Parameters.Add(new SQLiteParameter("@DATA", ImageData));
-                cmd.Parameters.Add(new SQLiteParameter("@IMAGE", ImageDataImg));
-                cmd.ExecuteNonQuery();
-            }
+                using (FileStream fi = new FileStream(filePathImg, FileMode.Open))
+                {
 
-            connection.Close();
+                    BinaryReader binaryReader = new BinaryReader(f);
+                    var ImageData = binaryReader.ReadBytes((int)f.Length);
+                    BinaryReader binaryReaderimg = new BinaryReader(fi);
+                    var ImageDataImg = binaryReaderimg.ReadBytes((int)fi.Length);
+                    // Connection string to SQLite database file
+                    string connectionString = "Data Source=Manuals.db;Version=3;";
+
+                    // Create a new connection object
+                    SQLiteConnection connection = new SQLiteConnection(connectionString);
+
+                    // Open the connection to the database
+                    connection.Open();
+
+                    // INSERT INTO TMANUAL, id, info, bytes SQL
+                    using (SQLiteCommand cmd = new SQLiteCommand())
+                    {
+                        cmd.Connection = connection;
+                        cmd.CommandText = "INSERT INTO TMANUAL (PID, NAME, DATA, IMAGE) VALUES (@PID, @NAME, @DATA, @IMAGE)";
+                        cmd.Parameters.Add(new SQLiteParameter("@PID", ManualID));
+                        cmd.Parameters.Add(new SQLiteParameter("@NAME", ManualName));
+                        cmd.Parameters.Add(new SQLiteParameter("@DATA", ImageData));
+                        cmd.Parameters.Add(new SQLiteParameter("@IMAGE", ImageDataImg));
+                        cmd.ExecuteNonQuery();
+                    }
+
+                    connection.Close();
+                }
             }
         }
 
@@ -141,91 +159,14 @@ public partial class Form1 : Form
 
     public void btnDeletePDF_Click(object sender, EventArgs e)
     {
-        string connectionString = "Data Source=Manuals.db;Version=3;";
-
-        SQLiteConnection connection = new SQLiteConnection(connectionString);
-
-        // Open the connection to the database
-        connection.Open();
-
-        using (SQLiteCommand cmd = new SQLiteCommand())
+        if (textBoxManualID.Text == "" && textBoxManualName.Text == "")
         {
-            cmd.Connection = connection;
-            cmd.CommandText = "DELETE FROM TMANUAL WHERE PID = @PID OR NAME = @NAME";
-            cmd.Parameters.AddWithValue("@PID", textBoxManualID.Text);
-            cmd.Parameters.AddWithValue("@NAME", textBoxManualName.Text);
-            cmd.ExecuteNonQuery();
+            MessageBox.Show("Please Input Data into ID or Name and Submit Again", "ATTENTION", MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }
 
-        connection.Close();
-
-    }
-
-    public void btnDeleteUsers_Click(object sender, EventArgs e)
-    {
-        string connectionString = "Data Source=Users.db;Version=3;";
-
-        SQLiteConnection connection = new SQLiteConnection(connectionString);
-
-        // Open the connection to the database
-        connection.Open();
-
-        using (SQLiteCommand cmd = new SQLiteCommand())
+        else
         {
-            cmd.Connection = connection;
-            cmd.CommandText = "DELETE FROM TUSER WHERE NAME = @NAME OR PID = @PID";
-            cmd.Parameters.AddWithValue("@PID", textBoxID.Text);
-            cmd.Parameters.AddWithValue("@NAME", textBoxUsername.Text);
-            cmd.ExecuteNonQuery();
-        }
-
-        connection.Close();
-
-    }
-
-    public void btnModUsers_Click(object sender, EventArgs e)
-    {
-        string connectionString = "Data Source=Users.db;Version=3;";
-        var EmployeeID = this.textBoxID.Text;
-        var EmployeeUser = this.textBoxUsername.Text;
-        var EmployeePW = this.textBoxPW.Text;
-
-
-        SQLiteConnection connection = new SQLiteConnection(connectionString);
-
-        // Open the connection to the database
-        connection.Open();
-
-        using (SQLiteCommand cmd = new SQLiteCommand())
-        {
-            cmd.Connection = connection;
-            cmd.CommandText = "DELETE FROM TUSER WHERE NAME = @NAME OR PID = @PID";
-            cmd.Parameters.AddWithValue("@PID", textBoxID.Text);
-            cmd.Parameters.AddWithValue("@NAME", textBoxUsername.Text);
-            cmd.ExecuteNonQuery();
-            cmd.CommandText = "INSERT INTO TUSER (PID, NAME, PW) VALUES (@PID, @NAME, @PW)";
-            cmd.Parameters.Add(new SQLiteParameter("@PID", EmployeeID));
-            cmd.Parameters.Add(new SQLiteParameter("@NAME", EmployeeUser));
-            cmd.Parameters.Add(new SQLiteParameter("@PW", EmployeePW));
-            cmd.ExecuteNonQuery();
-        }
-
-        connection.Close();
-
-    }
-
-    public void btnModPDF_Click(object sender, EventArgs e)
-    {
-        using (FileStream f = new FileStream(filePath, FileMode.Open))
-        {
-            using(FileStream fi = new FileStream(filePathImg, FileMode.Open)) {
-            BinaryReader binaryReader = new BinaryReader(f);
-            var ImageData = binaryReader.ReadBytes((int)f.Length);
-            BinaryReader binaryReaderimg = new BinaryReader(fi);
-            var ImageDataImg = binaryReaderimg.ReadBytes((int)fi.Length);
             string connectionString = "Data Source=Manuals.db;Version=3;";
-            var ManualName = this.textBoxManualName.Text;
-            var ManualID = this.textBoxManualID.Text;
 
             SQLiteConnection connection = new SQLiteConnection(connectionString);
 
@@ -239,16 +180,131 @@ public partial class Form1 : Form
                 cmd.Parameters.AddWithValue("@PID", textBoxManualID.Text);
                 cmd.Parameters.AddWithValue("@NAME", textBoxManualName.Text);
                 cmd.ExecuteNonQuery();
-                cmd.CommandText = "INSERT INTO TMANUAL (PID, NAME, DATA, IMAGE) VALUES (@PID, @NAME, @DATA, @IMAGE)";
-                cmd.Parameters.Add(new SQLiteParameter("@PID", ManualID));
-                cmd.Parameters.Add(new SQLiteParameter("@NAME", ManualName));
-                cmd.Parameters.Add(new SQLiteParameter("@DATA", ImageData));
-                cmd.Parameters.Add(new SQLiteParameter("@IMAGE", ImageDataImg));
+            }
+
+            connection.Close();
+        }
+
+    }
+
+    public void btnDeleteUsers_Click(object sender, EventArgs e)
+    {
+        if (textBoxID.Text == "" && textBoxUsername.Text == "")
+        {
+            MessageBox.Show("Please Input Data into ID or Username and Submit Again", "ATTENTION", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+        }
+
+        else
+        {
+            string connectionString = "Data Source=Users.db;Version=3;";
+
+            SQLiteConnection connection = new SQLiteConnection(connectionString);
+
+            // Open the connection to the database
+            connection.Open();
+
+            using (SQLiteCommand cmd = new SQLiteCommand())
+            {
+                cmd.Connection = connection;
+                cmd.CommandText = "DELETE FROM TUSER WHERE NAME = @NAME OR PID = @PID";
+                cmd.Parameters.AddWithValue("@PID", textBoxID.Text);
+                cmd.Parameters.AddWithValue("@NAME", textBoxUsername.Text);
                 cmd.ExecuteNonQuery();
             }
 
             connection.Close();
         }
+
+    }
+
+    public void btnModUsers_Click(object sender, EventArgs e)
+    {
+        string connectionString = "Data Source=Users.db;Version=3;";
+        var EmployeeID = this.textBoxID.Text;
+        var EmployeeUser = this.textBoxUsername.Text;
+        var EmployeePW = this.textBoxPW.Text;
+
+        if (EmployeeID == "" || EmployeeUser == "" || EmployeePW == "")
+        {
+            MessageBox.Show("Please Input Data into All Fields and Submit Again", "ATTENTION", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+        }
+
+        else
+        {
+
+            SQLiteConnection connection = new SQLiteConnection(connectionString);
+
+            // Open the connection to the database
+            connection.Open();
+
+            using (SQLiteCommand cmd = new SQLiteCommand())
+            {
+                cmd.Connection = connection;
+                cmd.CommandText = "DELETE FROM TUSER WHERE NAME = @NAME OR PID = @PID";
+                cmd.Parameters.AddWithValue("@PID", textBoxID.Text);
+                cmd.Parameters.AddWithValue("@NAME", textBoxUsername.Text);
+                cmd.ExecuteNonQuery();
+                cmd.CommandText = "INSERT INTO TUSER (PID, NAME, PW) VALUES (@PID, @NAME, @PW)";
+                cmd.Parameters.Add(new SQLiteParameter("@PID", EmployeeID));
+                cmd.Parameters.Add(new SQLiteParameter("@NAME", EmployeeUser));
+                cmd.Parameters.Add(new SQLiteParameter("@PW", EmployeePW));
+                cmd.ExecuteNonQuery();
+            }
+
+            connection.Close();
+        }
+
+    }
+
+    public void btnModPDF_Click(object sender, EventArgs e)
+    {
+        var ManualName = this.textBoxManualName.Text;
+        var ManualID = this.textBoxManualID.Text;
+
+        if (ManualName == "" || ManualID == "" || filePath == "" || filePathImg == "")
+        {
+
+            MessageBox.Show("Please Input Data into All Fields and Submit Again", "ATTENTION", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+
+        }
+
+        else
+        {
+
+            using (FileStream f = new FileStream(filePath, FileMode.Open))
+            {
+                using (FileStream fi = new FileStream(filePathImg, FileMode.Open))
+                {
+                    BinaryReader binaryReader = new BinaryReader(f);
+                    var ImageData = binaryReader.ReadBytes((int)f.Length);
+                    BinaryReader binaryReaderimg = new BinaryReader(fi);
+                    var ImageDataImg = binaryReaderimg.ReadBytes((int)fi.Length);
+                    string connectionString = "Data Source=Manuals.db;Version=3;";
+
+
+                    SQLiteConnection connection = new SQLiteConnection(connectionString);
+
+                    // Open the connection to the database
+                    connection.Open();
+
+                    using (SQLiteCommand cmd = new SQLiteCommand())
+                    {
+                        cmd.Connection = connection;
+                        cmd.CommandText = "DELETE FROM TMANUAL WHERE PID = @PID OR NAME = @NAME";
+                        cmd.Parameters.AddWithValue("@PID", textBoxManualID.Text);
+                        cmd.Parameters.AddWithValue("@NAME", textBoxManualName.Text);
+                        cmd.ExecuteNonQuery();
+                        cmd.CommandText = "INSERT INTO TMANUAL (PID, NAME, DATA, IMAGE) VALUES (@PID, @NAME, @DATA, @IMAGE)";
+                        cmd.Parameters.Add(new SQLiteParameter("@PID", ManualID));
+                        cmd.Parameters.Add(new SQLiteParameter("@NAME", ManualName));
+                        cmd.Parameters.Add(new SQLiteParameter("@DATA", ImageData));
+                        cmd.Parameters.Add(new SQLiteParameter("@IMAGE", ImageDataImg));
+                        cmd.ExecuteNonQuery();
+                    }
+
+                    connection.Close();
+                }
+            }
         }
 
     }
