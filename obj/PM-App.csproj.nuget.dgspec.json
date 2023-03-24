@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "T:\\APIPO\\Dev\\C#\\PM-App\\PM-App.csproj": {}
+    "t:\\APIPO\\Dev\\C#\\PM-App\\PM-App.csproj": {}
   },
   "projects": {
-    "T:\\APIPO\\Dev\\C#\\PM-App\\PM-App.csproj": {
+    "t:\\APIPO\\Dev\\C#\\PM-App\\PM-App.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "T:\\APIPO\\Dev\\C#\\PM-App\\PM-App.csproj",
+        "projectUniqueName": "t:\\APIPO\\Dev\\C#\\PM-App\\PM-App.csproj",
         "projectName": "PM-App",
-        "projectPath": "T:\\APIPO\\Dev\\C#\\PM-App\\PM-App.csproj",
+        "projectPath": "t:\\APIPO\\Dev\\C#\\PM-App\\PM-App.csproj",
         "packagesPath": "C:\\Users\\apipo\\.nuget\\packages\\",
-        "outputPath": "T:\\APIPO\\Dev\\C#\\PM-App\\obj\\",
+        "outputPath": "t:\\APIPO\\Dev\\C#\\PM-App\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\apipo\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -45,6 +45,10 @@
             "iTextSharp": {
               "target": "Package",
               "version": "[5.5.13.3, )"
+            },
+            "itext7": {
+              "target": "Package",
+              "version": "[7.2.5, )"
             }
           },
           "imports": [
