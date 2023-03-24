@@ -365,6 +365,8 @@ public partial class Form1 : Form
             textBoxManualImg.Visible = false;
             textBoxManualPATH.Visible = false;
             lblAddFile.Visible = false;
+            lblHome.Visible = false;
+            textBoxInstruct.Visible = false;
 
 
         }
@@ -390,13 +392,34 @@ public partial class Form1 : Form
             textBoxUsername.Visible = false;
             textBoxPW.Visible = false;
             lblAddUser.Visible = false;
+            lblHome.Visible = false;
+            textBoxInstruct.Visible = false;
 
         }
 
-        else
+        else if (e.ClickedItem == homeMenu)
         {
             btnAddUser.Visible = false;
+            btnModUser.Visible = false;
+            btnDeleteUser.Visible = false;
+            textBoxID.Visible = false;
+            textBoxUsername.Visible = false;
+            textBoxPW.Visible = false;
+            lblAddUser.Visible = false;
+
             btnAddPDF.Visible = false;
+            btnModPDF.Visible = false;
+            btnDeletePDF.Visible = false;
+            btnSelectPDF.Visible = false;
+            btnSelectImg.Visible = false;
+            textBoxManualName.Visible = false;
+            textBoxManualID.Visible = false;
+            textBoxManualImg.Visible = false;
+            textBoxManualPATH.Visible = false;
+            lblAddFile.Visible = false;
+
+            lblHome.Visible = true;
+            this.textBoxInstruct.Visible = true;
         }
     }
 
