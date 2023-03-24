@@ -119,18 +119,19 @@ public partial class Form1 : Form
 
         if (ManualName == "" || ManualID == "" || filePath == "" || filePathImg == "")
         {
+
             MessageBox.Show("Please Input Data into All Fields and Submit Again", "ATTENTION", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+
         }
+
         else
         {
-            // Compress PDF file
-            var compressedFilePath = "compressed.pdf";
-            CompressPdf(filePath, compressedFilePath);
 
-            using (FileStream f = new FileStream(compressedFilePath, FileMode.Open))
+            using (FileStream f = new FileStream(filePath, FileMode.Open))
             {
                 using (FileStream fi = new FileStream(filePathImg, FileMode.Open))
                 {
+
                     BinaryReader binaryReader = new BinaryReader(f);
                     var ImageData = binaryReader.ReadBytes((int)f.Length);
                     BinaryReader binaryReaderimg = new BinaryReader(fi);
@@ -164,7 +165,9 @@ public partial class Form1 : Form
             textBoxManualImg.Text = "";
             textBoxManualPATH.Text = "";
             textBoxManualName.Text = "";
+
         }
+
     }
 
     public void btnDeletePDF_Click(object sender, EventArgs e)
@@ -422,31 +425,5 @@ public partial class Form1 : Form
             this.textBoxInstruct.Visible = true;
         }
     }
-
-
-
-    public static void CompressPdf(string sourcePath, string destinationPath)
-    {
-        using (var sourceStream = new FileStream(sourcePath, FileMode.Open))
-        using (var destinationStream = new FileStream(destinationPath, FileMode.Create))
-        {
-            var reader = new PdfReader(sourceStream);
-            var pdfSize = reader.FileLength;
-            var document = new Document();
-            var copy = new PdfCopy(document, destinationStream);
-            document.Open();
-            for (var i = 1; i <= reader.NumberOfPages; i++)
-            {
-                var page = copy.GetImportedPage(reader, i);
-                copy.AddPage(page);
-            }
-            document.Close();
-            copy.Close();
-            reader.Close();
-            var destinationFileInfo = new FileInfo(destinationPath);
-            var destinationSize = destinationFileInfo.Length;
-            var compressionPercentage = 100 - ((double)destinationSize / pdfSize) * 100;
-            Console.WriteLine($"Compression complete. Original size: {pdfSize} bytes. Compressed size: {destinationSize} bytes. Compression percentage: {compressionPercentage}%");
-        }
-    }
+    
 }

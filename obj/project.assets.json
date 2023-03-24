@@ -5790,11 +5790,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "t:\\APIPO\\Dev\\C#\\PM-App\\PM-App.csproj",
+      "projectUniqueName": "T:\\APIPO\\Dev\\C#\\PM-App\\PM-App.csproj",
       "projectName": "PM-App",
-      "projectPath": "t:\\APIPO\\Dev\\C#\\PM-App\\PM-App.csproj",
+      "projectPath": "T:\\APIPO\\Dev\\C#\\PM-App\\PM-App.csproj",
       "packagesPath": "C:\\Users\\apipo\\.nuget\\packages\\",
-      "outputPath": "t:\\APIPO\\Dev\\C#\\PM-App\\obj\\",
+      "outputPath": "T:\\APIPO\\Dev\\C#\\PM-App\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\apipo\\AppData\\Roaming\\NuGet\\NuGet.Config"
