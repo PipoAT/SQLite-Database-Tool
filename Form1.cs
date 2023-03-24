@@ -45,6 +45,10 @@ public partial class Form1 : Form
             }
 
             connection.Close();
+
+            textBoxID.Text = "";
+            textBoxPW.Text = "";
+            textBoxUsername.Text = "";
         }
 
     }
@@ -153,6 +157,12 @@ public partial class Form1 : Form
                     connection.Close();
                 }
             }
+
+            textBoxManualID.Text = "";
+            textBoxManualImg.Text = "";
+            textBoxManualPATH.Text = "";
+            textBoxManualName.Text = "";
+
         }
 
     }
@@ -183,7 +193,14 @@ public partial class Form1 : Form
             }
 
             connection.Close();
+
+            textBoxManualID.Text = "";
+            textBoxManualImg.Text = "";
+            textBoxManualPATH.Text = "";
+            textBoxManualName.Text = "";
         }
+
+
 
     }
 
@@ -213,6 +230,10 @@ public partial class Form1 : Form
             }
 
             connection.Close();
+
+            textBoxID.Text = "";
+            textBoxPW.Text = "";
+            textBoxUsername.Text = "";
         }
 
     }
@@ -252,6 +273,10 @@ public partial class Form1 : Form
             }
 
             connection.Close();
+
+            textBoxID.Text = "";
+            textBoxPW.Text = "";
+            textBoxUsername.Text = "";
         }
 
     }
@@ -305,6 +330,13 @@ public partial class Form1 : Form
                     connection.Close();
                 }
             }
+
+            textBoxManualID.Text = "";
+            textBoxManualImg.Text = "";
+            textBoxManualPATH.Text = "";
+            textBoxManualName.Text = "";
+
+
         }
 
     }
@@ -361,7 +393,8 @@ public partial class Form1 : Form
 
         }
 
-        else {
+        else
+        {
             btnAddUser.Visible = false;
             btnAddPDF.Visible = false;
         }
