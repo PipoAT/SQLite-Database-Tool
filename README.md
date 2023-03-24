@@ -1,6 +1,6 @@
 # SQLite-Database-Tool
 
-This is a simple C# with .NET Framework based WinForms App that manages SQLite Databases. PLEASE NOTE: This project that uses iTextSharp to compresss PDF documents while modifing the databases.
+This is a simple C# with .NET Framework based WinForms App that manages SQLite Databases. PLEASE NOTE: This project that uses iTextSharp to compresss PDF documents while modifing the databases. Please reference the below license if you decide to use iTextSharp.
 
 ## License
 
