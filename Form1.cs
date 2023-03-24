@@ -309,5 +309,62 @@ public partial class Form1 : Form
 
     }
 
+    private void DatabaseMenu_DropDownItemClicked(object sender, ToolStripItemClickedEventArgs e)
+    {
+        if (e.ClickedItem == userDatabaseMenu)
+        {
+            // Show component 1
+            btnAddUser.Visible = true;
+            btnModUser.Visible = true;
+            btnDeleteUser.Visible = true;
+            textBoxID.Visible = true;
+            textBoxUsername.Visible = true;
+            textBoxPW.Visible = true;
+            lblAddUser.Visible = true;
+
+            // Hide other components if needed
+            btnAddPDF.Visible = false;
+            btnModPDF.Visible = false;
+            btnDeletePDF.Visible = false;
+            btnSelectPDF.Visible = false;
+            btnSelectImg.Visible = false;
+            textBoxManualName.Visible = false;
+            textBoxManualID.Visible = false;
+            textBoxManualImg.Visible = false;
+            textBoxManualPATH.Visible = false;
+            lblAddFile.Visible = false;
+
+
+        }
+        else if (e.ClickedItem == manualDatabaseMenu)
+        {
+            // Show component 2
+            btnAddPDF.Visible = true;
+            btnModPDF.Visible = true;
+            btnDeletePDF.Visible = true;
+            btnSelectPDF.Visible = true;
+            btnSelectImg.Visible = true;
+            textBoxManualName.Visible = true;
+            textBoxManualID.Visible = true;
+            textBoxManualImg.Visible = true;
+            textBoxManualPATH.Visible = true;
+            lblAddFile.Visible = true;
+
+            // Hide other components if needed
+            btnAddUser.Visible = false;
+            btnModUser.Visible = false;
+            btnDeleteUser.Visible = false;
+            textBoxID.Visible = false;
+            textBoxUsername.Visible = false;
+            textBoxPW.Visible = false;
+            lblAddUser.Visible = false;
+
+        }
+
+        else {
+            btnAddUser.Visible = false;
+            btnAddPDF.Visible = false;
+        }
+    }
 
 }

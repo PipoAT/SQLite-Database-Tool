@@ -28,7 +28,7 @@ partial class Form1
     /// </summary>
     private void InitializeComponent()
     {
-
+        this.menuStrip = new MenuStrip();
         this.lblAddUser = new System.Windows.Forms.Label();
         this.lblAddFile = new System.Windows.Forms.Label();
         this.textBoxID = new System.Windows.Forms.TextBox();
@@ -48,40 +48,50 @@ partial class Form1
         this.btnDeleteUser = new System.Windows.Forms.Button();
         this.SuspendLayout();
 
+        this.userDatabaseMenu = new ToolStripMenuItem("&Users");
+        this.manualDatabaseMenu = new ToolStripMenuItem("&Manuals");
+
         this.textBoxID.AutoSize = true;
         this.textBoxID.Location = new System.Drawing.Point(20, 75);
         this.textBoxID.PlaceholderText = "EMPLOYEE ID";
+        this.textBoxID.Visible = false;
         this.textBoxID.Width = 325;
 
 
         this.textBoxUsername.AutoSize = true;
         this.textBoxUsername.Location = new System.Drawing.Point(20, 100);
         this.textBoxUsername.PlaceholderText = "EMPLOYEE USERNAME/NAME";
+        this.textBoxUsername.Visible = false;
         this.textBoxUsername.Width = 325;
 
         this.textBoxPW.AutoSize = true;
         this.textBoxPW.Location = new System.Drawing.Point(20, 125);
         this.textBoxPW.PlaceholderText = "EMPLOYEE Password";
+        this.textBoxPW.Visible = false;
         this.textBoxPW.Width = 325;
 
         this.textBoxManualPATH.AutoSize = true;
-        this.textBoxManualPATH.Location = new System.Drawing.Point(20, 275);
+        this.textBoxManualPATH.Location = new System.Drawing.Point(20, 75);
         this.textBoxManualPATH.PlaceholderText = "Manual PATH";
+        this.textBoxManualPATH.Visible = false;
         this.textBoxManualPATH.Width = 325;
 
         this.textBoxManualName.AutoSize = true;
-        this.textBoxManualName.Location = new System.Drawing.Point(20, 300);
+        this.textBoxManualName.Location = new System.Drawing.Point(20, 100);
         this.textBoxManualName.PlaceholderText = "Manual Name";
+        this.textBoxManualName.Visible = false;
         this.textBoxManualName.Width = 325;
 
         this.textBoxManualID.AutoSize = true;
-        this.textBoxManualID.Location = new System.Drawing.Point(20, 325);
+        this.textBoxManualID.Location = new System.Drawing.Point(20, 125);
         this.textBoxManualID.PlaceholderText = "Manual ID";
+        this.textBoxManualID.Visible = false;
         this.textBoxManualID.Width = 325;
 
         this.textBoxManualImg.AutoSize = true;
-        this.textBoxManualImg.Location = new System.Drawing.Point(20, 350);
+        this.textBoxManualImg.Location = new System.Drawing.Point(20, 150);
         this.textBoxManualImg.PlaceholderText = "Manual Image PATH";
+        this.textBoxManualImg.Visible = false;
         this.textBoxManualImg.Width = 325;
 
 
@@ -91,78 +101,84 @@ partial class Form1
         this.lblAddUser.BackColor = Color.White;
         this.lblAddUser.Location = new System.Drawing.Point(0, 20);
         this.lblAddUser.Name = "lblAddUser";
-        this.lblAddUser.Size = new System.Drawing.Size(510, 30);
+        this.lblAddUser.Size = new System.Drawing.Size(510, 35);
         this.lblAddUser.TabIndex = 8;
-        this.lblAddUser.Text = "Find/Create User";
+        this.lblAddUser.Text = "Modify User Database";
         this.lblAddUser.TextAlign = ContentAlignment.MiddleCenter;
+        this.lblAddUser.Visible = false;
 
         this.lblAddFile.Font = new System.Drawing.Font("Arial Rounded MT Bold", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
         this.lblAddFile.BackColor = Color.White;
-        this.lblAddFile.Location = new System.Drawing.Point(0, 220);
+        this.lblAddFile.Location = new System.Drawing.Point(0, 20);
         this.lblAddFile.Name = "lblAddFile";
-        this.lblAddFile.Size = new System.Drawing.Size(510, 30);
+        this.lblAddFile.Size = new System.Drawing.Size(510, 35);
         this.lblAddFile.TabIndex = 8;
-        this.lblAddFile.Text = "Find/Create Manual";
+        this.lblAddFile.Text = "Modify Manual Database";
         this.lblAddFile.TextAlign = ContentAlignment.MiddleCenter;
+        this.lblAddFile.Visible = false;
 
         this.btnSelectPDF.BackColor = System.Drawing.SystemColors.AppWorkspace;
         this.btnSelectPDF.FlatAppearance.BorderColor = System.Drawing.Color.Black;
         this.btnSelectPDF.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
         this.btnSelectPDF.Font = new System.Drawing.Font("Arial Rounded MT Bold", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-        this.btnSelectPDF.Location = new System.Drawing.Point(350, 275);
+        this.btnSelectPDF.Location = new System.Drawing.Point(350, 175);
         this.btnSelectPDF.Name = "btnSelectPDF";
         this.btnSelectPDF.Size = new System.Drawing.Size(137, 23);
         this.btnSelectPDF.TabIndex = 3;
         this.btnSelectPDF.Text = "Select PDF";
-        this.btnSelectPDF.UseVisualStyleBackColor = false;
+        this.btnSelectPDF.Visible = false;
         this.btnSelectPDF.Click += new System.EventHandler(this.selectfile_Click);
 
         this.btnSelectImg.BackColor = System.Drawing.SystemColors.AppWorkspace;
         this.btnSelectImg.FlatAppearance.BorderColor = System.Drawing.Color.Black;
         this.btnSelectImg.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
         this.btnSelectImg.Font = new System.Drawing.Font("Arial Rounded MT Bold", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-        this.btnSelectImg.Location = new System.Drawing.Point(350, 375);
+        this.btnSelectImg.Location = new System.Drawing.Point(350, 150);
         this.btnSelectImg.Name = "btnSelectImg";
         this.btnSelectImg.Size = new System.Drawing.Size(137, 23);
         this.btnSelectImg.TabIndex = 3;
         this.btnSelectImg.Text = "Select Image";
         this.btnSelectImg.UseVisualStyleBackColor = false;
+        this.btnSelectImg.Visible = false;
         this.btnSelectImg.Click += new System.EventHandler(this.selectImg_Click);
 
         this.btnAddPDF.BackColor = System.Drawing.SystemColors.AppWorkspace;
         this.btnAddPDF.FlatAppearance.BorderColor = System.Drawing.Color.Black;
         this.btnAddPDF.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
         this.btnAddPDF.Font = new System.Drawing.Font("Arial Rounded MT Bold", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-        this.btnAddPDF.Location = new System.Drawing.Point(350, 300);
+        this.btnAddPDF.Location = new System.Drawing.Point(350, 75);
         this.btnAddPDF.Name = "btnAddPDF";
         this.btnAddPDF.Size = new System.Drawing.Size(137, 23);
         this.btnAddPDF.TabIndex = 3;
         this.btnAddPDF.Text = "Add PDF";
         this.btnAddPDF.UseVisualStyleBackColor = false;
+        this.btnAddPDF.Visible = false;
         this.btnAddPDF.Click += new System.EventHandler(this.btnAddPDF_Click);
 
         this.btnDeletePDF.BackColor = System.Drawing.SystemColors.AppWorkspace;
         this.btnDeletePDF.FlatAppearance.BorderColor = System.Drawing.Color.Black;
         this.btnDeletePDF.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
         this.btnDeletePDF.Font = new System.Drawing.Font("Arial Rounded MT Bold", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-        this.btnDeletePDF.Location = new System.Drawing.Point(350, 325);
+        this.btnDeletePDF.Location = new System.Drawing.Point(350, 125);
         this.btnDeletePDF.Name = "btnDeletePDF";
         this.btnDeletePDF.Size = new System.Drawing.Size(137, 23);
         this.btnDeletePDF.TabIndex = 3;
         this.btnDeletePDF.Text = "Delete PDF";
         this.btnDeletePDF.UseVisualStyleBackColor = false;
+        this.btnDeletePDF.Visible = false;
         this.btnDeletePDF.Click += new System.EventHandler(this.btnDeletePDF_Click);
 
         this.btnModPDF.BackColor = System.Drawing.SystemColors.AppWorkspace;
         this.btnModPDF.FlatAppearance.BorderColor = System.Drawing.Color.Black;
         this.btnModPDF.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
         this.btnModPDF.Font = new System.Drawing.Font("Arial Rounded MT Bold", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-        this.btnModPDF.Location = new System.Drawing.Point(350, 350);
+        this.btnModPDF.Location = new System.Drawing.Point(350, 100);
         this.btnModPDF.Name = "btnModPDF";
         this.btnModPDF.Size = new System.Drawing.Size(137, 23);
         this.btnModPDF.TabIndex = 3;
         this.btnModPDF.Text = "Modify PDF";
         this.btnModPDF.UseVisualStyleBackColor = false;
+        this.btnModPDF.Visible = false;
         this.btnModPDF.Click += new System.EventHandler(this.btnModPDF_Click);
 
         this.btnAddUser.BackColor = System.Drawing.SystemColors.AppWorkspace;
@@ -175,6 +191,7 @@ partial class Form1
         this.btnAddUser.TabIndex = 3;
         this.btnAddUser.Text = "Add User(s)";
         this.btnAddUser.UseVisualStyleBackColor = false;
+        this.btnAddUser.Visible = false;
         this.btnAddUser.Click += new System.EventHandler(this.btnAddUsers_Click);
 
         this.btnModUser.BackColor = System.Drawing.SystemColors.AppWorkspace;
@@ -187,6 +204,7 @@ partial class Form1
         this.btnModUser.TabIndex = 3;
         this.btnModUser.Text = "Modify User(s)";
         this.btnModUser.UseVisualStyleBackColor = false;
+        this.btnModUser.Visible = false;
         this.btnModUser.Click += new System.EventHandler(this.btnModUsers_Click);
 
         this.btnDeleteUser.BackColor = System.Drawing.SystemColors.AppWorkspace;
@@ -199,15 +217,24 @@ partial class Form1
         this.btnDeleteUser.TabIndex = 3;
         this.btnDeleteUser.Text = "Delete User(s)";
         this.btnDeleteUser.UseVisualStyleBackColor = false;
+        this.btnDeleteUser.Visible = false;
         this.btnDeleteUser.Click += new System.EventHandler(this.btnDeleteUsers_Click);
 
         // 
         // Form1
         // 
+        menuStrip.Parent = this;
+        this.menuStrip.Items.AddRange(new ToolStripItem[] { userDatabaseMenu, manualDatabaseMenu});
+        this.MainMenuStrip = menuStrip;
+
+        this.menuStrip.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.DatabaseMenu_DropDownItemClicked);
+
+
+
         this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
         this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
         this.BackColor = System.Drawing.ColorTranslator.FromHtml("#00457c");
-        this.ClientSize = new System.Drawing.Size(510, 450);
+        this.ClientSize = new System.Drawing.Size(510, 225);
         this.Controls.Add(this.lblAddFile);
         this.Controls.Add(this.lblAddUser);
         this.Controls.Add(this.textBoxID);
@@ -227,7 +254,7 @@ partial class Form1
         this.Controls.Add(this.btnSelectImg);
         this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
         this.MaximizeBox = false;
-        this.MinimizeBox = false;
+        this.MinimizeBox = true;
         this.Name = "Form1";
         this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
         this.Text = "SQLite Database Management Tool";
@@ -238,6 +265,9 @@ partial class Form1
 
     #endregion
 
+    private MenuStrip menuStrip;
+    private ToolStripMenuItem userDatabaseMenu;
+    private ToolStripMenuItem manualDatabaseMenu;
     private System.Windows.Forms.Label lblAddFile;
     private System.Windows.Forms.Label lblAddUser;
     private System.Windows.Forms.TextBox textBoxID;
