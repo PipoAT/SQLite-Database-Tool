@@ -4,6 +4,6 @@ This is a simple C# with .NET Framework based WinForms App that manages SQLite D
 
 ## License
 
-This project contains iTextSharp which is licensed under the AGPL license. See the [LICENSE](https://github.com/itext/itextsharp/blob/3b8d7cc6a6bd7d9cf44d5f3b559d98d7f2b3d700/LICENSE.md) file in the iTextSharp repository for more information.
+This project contains iTextSharp which is licensed under the AGPL license. See the [LICENSE](https://github.com/itext/itext7-dotnet/blob/aadc64c67c2aed8d5a30fb0f5d182ef4c466df68/LICENSE.md) file in the iTextSharp repository for more information.
 
 The source code WAS NOT MODIFIED in any way for this project.
