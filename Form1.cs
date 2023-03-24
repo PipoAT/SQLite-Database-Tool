@@ -1,7 +1,4 @@
 using System.Data.SQLite;
-using iTextSharp.text.pdf;
-using iTextSharp.text;
-using System.IO;
 namespace PM_App;
 
 public partial class Form1 : Form

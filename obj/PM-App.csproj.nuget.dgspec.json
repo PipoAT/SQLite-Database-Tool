@@ -41,14 +41,6 @@
             "System.Data.SQLite": {
               "target": "Package",
               "version": "[1.0.117, )"
-            },
-            "iTextSharp": {
-              "target": "Package",
-              "version": "[5.5.13.3, )"
-            },
-            "itext7": {
-              "target": "Package",
-              "version": "[7.2.5, )"
             }
           },
           "imports": [
