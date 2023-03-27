@@ -37,7 +37,7 @@ public partial class Form1 : Form
             using (SQLiteCommand cmd = new SQLiteCommand())
             {
                 cmd.Connection = connection;
-                cmd.CommandText = "INSERT INTO TUSER (PID, NAME, PW) VALUES (@PID, @NAME, @PW)";
+                cmd.CommandText = "INSERT INTO TUSER (PID, NAME, PW, USER) VALUES (@PID, @NAME, @PW, 0)";
                 cmd.Parameters.Add(new SQLiteParameter("@PID", EmployeeID));
                 cmd.Parameters.Add(new SQLiteParameter("@NAME", EmployeeUser));
                 cmd.Parameters.Add(new SQLiteParameter("@PW", EmployeePW));
@@ -341,6 +341,141 @@ public partial class Form1 : Form
 
     }
 
+
+    public void btnDeleteTask_Click(object sender, EventArgs e) {
+
+        var EmployeeUser = this.textBoxIDTASK.Text;
+        var TID = this.textBoxTID.Text;
+
+        if (EmployeeUser == "" || TID == "")
+        {
+            MessageBox.Show("Please Input Data into All Fields and Submit Again", "ATTENTION", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+        }
+
+        else
+        {
+            // Connection string to SQLite database file
+            string connectionString = "Data Source=tasks.db;Version=3;";
+
+            // Create a new connection object
+            SQLiteConnection connection = new SQLiteConnection(connectionString);
+
+            // Open the connection to the database
+            connection.Open();
+
+            // INSERT INTO TMANUAL, id, info, bytes SQL
+            using (SQLiteCommand cmd = new SQLiteCommand())
+            {
+                cmd.Connection = connection;
+                cmd.CommandText = "DELETE FROM task_list WHERE USERNAME = @NAME AND PID = @TID";
+                cmd.Parameters.Add(new SQLiteParameter("@NAME", EmployeeUser));
+                cmd.Parameters.Add(new SQLiteParameter("@TID", TID));
+                cmd.ExecuteNonQuery();
+            }
+
+            connection.Close();
+
+            textBoxIDTASK.Text = "";
+            textBoxTASK.Text = "";
+            textBoxDUEDATE.Text = "";
+            textBoxTID.Text = "";
+        }
+    }
+
+    public void btnAddTask_Click(object sender, EventArgs e) {
+
+        var EmployeeUser = this.textBoxIDTASK.Text;
+        var EmployeeTask = this.textBoxTASK.Text;
+        var DueDate = this.textBoxDUEDATE.Text;
+        var TID = this.textBoxTID.Text;
+
+        if (EmployeeTask == "" || EmployeeUser == "" || DueDate == "" || TID == "")
+        {
+            MessageBox.Show("Please Input Data into All Fields and Submit Again", "ATTENTION", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+        }
+
+        else
+        {
+            // Connection string to SQLite database file
+            string connectionString = "Data Source=tasks.db;Version=3;";
+
+            // Create a new connection object
+            SQLiteConnection connection = new SQLiteConnection(connectionString);
+
+            // Open the connection to the database
+            connection.Open();
+
+            // INSERT INTO TMANUAL, id, info, bytes SQL
+            using (SQLiteCommand cmd = new SQLiteCommand())
+            {
+                cmd.Connection = connection;
+                cmd.CommandText = "INSERT INTO task_list (PID, USERNAME, TASK, DUE_DATE) VALUES (@TID, @NAME, @TASK, @DATE)";
+                cmd.Parameters.Add(new SQLiteParameter("@TID", TID));
+                cmd.Parameters.Add(new SQLiteParameter("@NAME", EmployeeUser));
+                cmd.Parameters.Add(new SQLiteParameter("@TASK", EmployeeTask));
+                cmd.Parameters.Add(new SQLiteParameter("@DATE", DueDate));
+                cmd.ExecuteNonQuery();
+            }
+
+            connection.Close();
+
+            textBoxIDTASK.Text = "";
+            textBoxTASK.Text = "";
+            textBoxDUEDATE.Text = "";
+            textBoxTID.Text = "";
+        }
+    }
+
+    public void btnModifyTask_Click(object sender, EventArgs e) {
+
+        var EmployeeUser = this.textBoxIDTASK.Text;
+        var EmployeeTask = this.textBoxTASK.Text;
+        var DueDate = this.textBoxDUEDATE.Text;
+        var TID = this.textBoxTID.Text;
+
+        if (EmployeeUser == "" || TID == "")
+        {
+            MessageBox.Show("Please Input TID/Task ID and Employee NAME into All Fields and Submit Again", "ATTENTION", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+        }
+
+        else
+        {
+            // Connection string to SQLite database file
+            string connectionString = "Data Source=tasks.db;Version=3;";
+
+            // Create a new connection object
+            SQLiteConnection connection = new SQLiteConnection(connectionString);
+
+            // Open the connection to the database
+            connection.Open();
+
+            // INSERT INTO TMANUAL, id, info, bytes SQL
+            using (SQLiteCommand cmd = new SQLiteCommand())
+            {
+                cmd.Connection = connection;
+                cmd.CommandText = "DELETE FROM task_list WHERE USERNAME = @NAME AND PID = @TID";
+                cmd.Parameters.Add(new SQLiteParameter("@NAME", EmployeeUser));
+                cmd.Parameters.Add(new SQLiteParameter("@TID", TID));
+                cmd.ExecuteNonQuery();
+                cmd.CommandText = "INSERT INTO task_list (PID, USERNAME, TASK, DUE_DATE) VALUES (@TID, @NAME, @TASK, @DATE)";
+                cmd.Parameters.Add(new SQLiteParameter("@TID", TID));
+                cmd.Parameters.Add(new SQLiteParameter("@NAME", EmployeeUser));
+                cmd.Parameters.Add(new SQLiteParameter("@TASK", EmployeeTask));
+                cmd.Parameters.Add(new SQLiteParameter("@DATE", DueDate));
+                cmd.ExecuteNonQuery();
+            }
+
+            connection.Close();
+
+            textBoxIDTASK.Text = "";
+            textBoxTASK.Text = "";
+            textBoxDUEDATE.Text = "";
+            textBoxTID.Text = "";
+        }
+    }
+
+
+
     private void DatabaseMenu_DropDownItemClicked(object sender, ToolStripItemClickedEventArgs e)
     {
         if (e.ClickedItem == userDatabaseMenu)
@@ -367,6 +502,14 @@ public partial class Form1 : Form
             lblAddFile.Visible = false;
             lblHome.Visible = false;
             textBoxInstruct.Visible = false;
+            lblAddTask.Visible = false;
+            btnAddTask.Visible = false;
+            textBoxDUEDATE.Visible = false;
+            textBoxIDTASK.Visible = false;
+            textBoxTASK.Visible = false;
+            btnDeleteTask.Visible = false;
+            textBoxTID.Visible = false;
+            btnModifyTask.Visible = false;
 
 
         }
@@ -394,6 +537,14 @@ public partial class Form1 : Form
             lblAddUser.Visible = false;
             lblHome.Visible = false;
             textBoxInstruct.Visible = false;
+            lblAddTask.Visible = false;
+            btnAddTask.Visible = false;
+            textBoxDUEDATE.Visible = false;
+            textBoxIDTASK.Visible = false;
+            textBoxTASK.Visible = false;
+            btnDeleteTask.Visible = false;
+            textBoxTID.Visible = false;
+            btnModifyTask.Visible = false;
 
         }
 
@@ -417,9 +568,51 @@ public partial class Form1 : Form
             textBoxManualImg.Visible = false;
             textBoxManualPATH.Visible = false;
             lblAddFile.Visible = false;
+            lblAddTask.Visible = false;
+            btnAddTask.Visible = false;
+            textBoxDUEDATE.Visible = false;
+            textBoxIDTASK.Visible = false;
+            textBoxTASK.Visible = false;
+            btnDeleteTask.Visible = false;
+            textBoxTID.Visible = false;
+            btnModifyTask.Visible = false;
 
             lblHome.Visible = true;
             this.textBoxInstruct.Visible = true;
+        }
+
+        else if (e.ClickedItem == tasksDatabaseMenu) {
+
+            btnAddUser.Visible = false;
+            btnModUser.Visible = false;
+            btnDeleteUser.Visible = false;
+            textBoxID.Visible = false;
+            textBoxUsername.Visible = false;
+            textBoxPW.Visible = false;
+            lblAddUser.Visible = false;
+
+            btnAddPDF.Visible = false;
+            btnModPDF.Visible = false;
+            btnDeletePDF.Visible = false;
+            btnSelectPDF.Visible = false;
+            btnSelectImg.Visible = false;
+            textBoxManualName.Visible = false;
+            textBoxManualID.Visible = false;
+            textBoxManualImg.Visible = false;
+            textBoxManualPATH.Visible = false;
+            lblAddFile.Visible = false;
+
+            lblHome.Visible = false;
+            this.textBoxInstruct.Visible = false;
+
+            lblAddTask.Visible = true;
+            btnAddTask.Visible = true;
+            textBoxDUEDATE.Visible = true;
+            textBoxIDTASK.Visible = true;
+            textBoxTASK.Visible = true;
+            btnDeleteTask.Visible = true;
+            textBoxTID.Visible = true;
+            btnModifyTask.Visible = true;
         }
     }
     
