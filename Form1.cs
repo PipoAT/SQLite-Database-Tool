@@ -804,4 +804,39 @@ public partial class Form1 : Form
         }
     }
 
+    private void SetupTextBox(TextBox textBox, string placeholderText, int x, int y, int width, bool visible)
+    {
+
+        textBox.AutoSize = true;
+        textBox.Location = new System.Drawing.Point(x, y);
+        textBox.PlaceholderText = placeholderText;
+        textBox.Visible = visible;
+        textBox.Width = width;
+    }
+
+    private void SetLabelProperties(Label label, string text, bool visible)
+    {
+        label.Font = new System.Drawing.Font("Arial Rounded MT Bold", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+        label.BackColor = Color.White;
+        label.Location = new System.Drawing.Point(0, 20);
+        label.Size = new System.Drawing.Size(510, 35);
+        label.TabIndex = 8;
+        label.Text = text;
+        label.TextAlign = ContentAlignment.MiddleCenter;
+        label.Visible = visible;
+    }
+
+    private void SetButton(Button button, int y, EventHandler clickHandler, string text)
+    {
+        button.BackColor = System.Drawing.SystemColors.AppWorkspace;
+        button.Font = new System.Drawing.Font("Arial Rounded MT Bold", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+        button.FlatAppearance.BorderColor = System.Drawing.Color.Black;
+        button.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+        button.Size = new System.Drawing.Size(137, 20);
+        button.UseVisualStyleBackColor = false;
+        button.Visible = false;
+        button.Location = new System.Drawing.Point(350, y);
+        button.Click += clickHandler;
+        button.Text = text;
+    }
 }

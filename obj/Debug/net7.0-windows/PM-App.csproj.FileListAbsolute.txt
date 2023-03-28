@@ -1,3 +1,8 @@
+T:\APIPO\Dev\C#\PM-App\obj\Debug\net7.0-windows\PM-App.csproj.AssemblyReference.cache
+T:\APIPO\Dev\C#\PM-App\obj\Debug\net7.0-windows\PM-App.GeneratedMSBuildEditorConfig.editorconfig
+T:\APIPO\Dev\C#\PM-App\obj\Debug\net7.0-windows\PM-App.AssemblyInfoInputs.cache
+T:\APIPO\Dev\C#\PM-App\obj\Debug\net7.0-windows\PM-App.AssemblyInfo.cs
+T:\APIPO\Dev\C#\PM-App\obj\Debug\net7.0-windows\PM-App.csproj.CoreCompileInputs.cache
 T:\APIPO\Dev\C#\PM-App\bin\Debug\net7.0-windows\PM-App.exe
 T:\APIPO\Dev\C#\PM-App\bin\Debug\net7.0-windows\PM-App.deps.json
 T:\APIPO\Dev\C#\PM-App\bin\Debug\net7.0-windows\PM-App.runtimeconfig.json
@@ -17,11 +22,6 @@ T:\APIPO\Dev\C#\PM-App\bin\Debug\net7.0-windows\runtimes\win-x64\native\SQLite.I
 T:\APIPO\Dev\C#\PM-App\bin\Debug\net7.0-windows\runtimes\win-x86\native\SQLite.Interop.dll
 T:\APIPO\Dev\C#\PM-App\bin\Debug\net7.0-windows\runtimes\unix\lib\netcoreapp2.1\System.Data.SqlClient.dll
 T:\APIPO\Dev\C#\PM-App\bin\Debug\net7.0-windows\runtimes\win\lib\netcoreapp2.1\System.Data.SqlClient.dll
-T:\APIPO\Dev\C#\PM-App\obj\Debug\net7.0-windows\PM-App.csproj.AssemblyReference.cache
-T:\APIPO\Dev\C#\PM-App\obj\Debug\net7.0-windows\PM-App.GeneratedMSBuildEditorConfig.editorconfig
-T:\APIPO\Dev\C#\PM-App\obj\Debug\net7.0-windows\PM-App.AssemblyInfoInputs.cache
-T:\APIPO\Dev\C#\PM-App\obj\Debug\net7.0-windows\PM-App.AssemblyInfo.cs
-T:\APIPO\Dev\C#\PM-App\obj\Debug\net7.0-windows\PM-App.csproj.CoreCompileInputs.cache
 T:\APIPO\Dev\C#\PM-App\obj\Debug\net7.0-windows\PM-App.csproj.CopyComplete
 T:\APIPO\Dev\C#\PM-App\obj\Debug\net7.0-windows\PM-App.dll
 T:\APIPO\Dev\C#\PM-App\obj\Debug\net7.0-windows\refint\PM-App.dll
