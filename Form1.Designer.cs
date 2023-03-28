@@ -121,12 +121,12 @@ partial class Form1
         // 
         // Form1
         // 
+
         menuStrip.Parent = this;
         this.menuStrip.Items.AddRange(new ToolStripItem[] { homeMenu, userDatabaseMenu, manualDatabaseMenu, tasksDatabaseMenu, updateDatabaseMenu });
         this.MainMenuStrip = menuStrip;
 
         this.menuStrip.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.DatabaseMenu_DropDownItemClicked);
-
 
 
         this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -180,16 +180,11 @@ partial class Form1
     #endregion
 
     private MenuStrip menuStrip;
-    private ToolStripMenuItem homeMenu;
-    private ToolStripMenuItem userDatabaseMenu;
-    private ToolStripMenuItem manualDatabaseMenu;
-    private ToolStripMenuItem tasksDatabaseMenu;
-    private ToolStripMenuItem updateDatabaseMenu;
-    private System.Windows.Forms.Label lblAddFile;
-    private System.Windows.Forms.Label lblHome;
-    private System.Windows.Forms.Label lblAddUser;
-    private System.Windows.Forms.Label lblAddTask;
-    private System.Windows.Forms.Label lblUpdate;
+
+    private ToolStripMenuItem homeMenu, userDatabaseMenu, manualDatabaseMenu, tasksDatabaseMenu, updateDatabaseMenu;
+
+    private System.Windows.Forms.Label lblAddFile, lblHome, lblAddUser, lblAddTask, lblUpdate;
+    
     private System.Windows.Forms.RichTextBox textBoxInstruct;
     private System.Windows.Forms.TextBox textBoxID;
     private System.Windows.Forms.TextBox textBoxUsername;

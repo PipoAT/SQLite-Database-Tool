@@ -595,212 +595,165 @@ public partial class Form1 : Form
         }
     }
 
+    private void ShowUserControl()
+    {
+        btnAddUser.Visible = true;
+        btnModUser.Visible = true;
+        btnDeleteUser.Visible = true;
+        textBoxID.Visible = true;
+        textBoxUsername.Visible = true;
+        textBoxPW.Visible = true;
+        lblAddUser.Visible = true;
+    }
+
+    private void HideUserControl()
+    {
+        btnAddUser.Visible = false;
+        btnModUser.Visible = false;
+        btnDeleteUser.Visible = false;
+        textBoxID.Visible = false;
+        textBoxUsername.Visible = false;
+        textBoxPW.Visible = false;
+        lblAddUser.Visible = false;
+    }
+
+    private void HidePDFControl()
+    {
+        btnAddPDF.Visible = false;
+        btnModPDF.Visible = false;
+        btnDeletePDF.Visible = false;
+        btnSelectPDF.Visible = false;
+        btnSelectImg.Visible = false;
+        textBoxManualName.Visible = false;
+        textBoxManualID.Visible = false;
+        textBoxManualImg.Visible = false;
+        textBoxManualPATH.Visible = false;
+        lblAddFile.Visible = false;
+    }
+
+    private void ShowPDFControl()
+    {
+        btnAddPDF.Visible = true;
+        btnModPDF.Visible = true;
+        btnDeletePDF.Visible = true;
+        btnSelectPDF.Visible = true;
+        btnSelectImg.Visible = true;
+        textBoxManualName.Visible = true;
+        textBoxManualID.Visible = true;
+        textBoxManualImg.Visible = true;
+        textBoxManualPATH.Visible = true;
+        lblAddFile.Visible = true;
+    }
+
+    private void HideTaskControl()
+    {
+
+        lblAddTask.Visible = false;
+        btnAddTask.Visible = false;
+        textBoxDUEDATE.Visible = false;
+        textBoxIDTASK.Visible = false;
+        textBoxTASK.Visible = false;
+        btnDeleteTask.Visible = false;
+        textBoxTID.Visible = false;
+        btnModifyTask.Visible = false;
+    }
+
+    private void ShowTaskControl()
+    {
+        lblAddTask.Visible = true;
+        btnAddTask.Visible = true;
+        textBoxDUEDATE.Visible = true;
+        textBoxIDTASK.Visible = true;
+        textBoxTASK.Visible = true;
+        btnDeleteTask.Visible = true;
+        textBoxTID.Visible = true;
+        btnModifyTask.Visible = true;
+    }
+
+    private void ShowHome()
+    {
+        lblHome.Visible = true;
+        textBoxInstruct.Visible = true;
+    }
+
+    private void HideHome()
+    {
+        lblHome.Visible = false;
+        textBoxInstruct.Visible = false;
+    }
+
+    private void HideUpdateControl()
+    {
+        btnDeleteUpdate.Visible = false;
+        btnAddUpdate.Visible = false;
+        textBoxUID.Visible = false;
+        lblUpdate.Visible = false;
+        textBoxUpdateText.Visible = false;
+        btnModUpdate.Visible = false;
+    }
+
+    private void ShowUpdateControl()
+    {
+        btnDeleteUpdate.Visible = false;
+        lblUpdate.Visible = true;
+        btnDeleteUpdate.Visible = true;
+        btnAddUpdate.Visible = true;
+        textBoxUID.Visible = true;
+        textBoxUpdateText.Visible = true;
+        btnModUpdate.Visible = true;
+    }
+
     private void DatabaseMenu_DropDownItemClicked(object sender, ToolStripItemClickedEventArgs e)
     {
         if (e.ClickedItem == userDatabaseMenu)
         {
-            // Show component 1
-            btnAddUser.Visible = true;
-            btnModUser.Visible = true;
-            btnDeleteUser.Visible = true;
-            textBoxID.Visible = true;
-            textBoxUsername.Visible = true;
-            textBoxPW.Visible = true;
-            lblAddUser.Visible = true;
-
-            // Hide other components if needed
-            btnAddPDF.Visible = false;
-            btnModPDF.Visible = false;
-            btnDeletePDF.Visible = false;
-            btnSelectPDF.Visible = false;
-            btnSelectImg.Visible = false;
-            textBoxManualName.Visible = false;
-            textBoxManualID.Visible = false;
-            textBoxManualImg.Visible = false;
-            textBoxManualPATH.Visible = false;
-            lblAddFile.Visible = false;
-            lblHome.Visible = false;
-            textBoxInstruct.Visible = false;
-            lblAddTask.Visible = false;
-            btnAddTask.Visible = false;
-            textBoxDUEDATE.Visible = false;
-            textBoxIDTASK.Visible = false;
-            textBoxTASK.Visible = false;
-            btnDeleteTask.Visible = false;
-            textBoxTID.Visible = false;
-            btnModifyTask.Visible = false;
-            btnDeleteUpdate.Visible = false;
-            btnAddUpdate.Visible = false;
-            textBoxUID.Visible = false;
-            lblUpdate.Visible = false;
-            textBoxUpdateText.Visible = false;
-            btnModUpdate.Visible = false;
-
+            ShowUserControl();
+            HidePDFControl();
+            HideTaskControl();
+            HideHome();
+            HideUpdateControl();
 
         }
         else if (e.ClickedItem == manualDatabaseMenu)
         {
-            // Show component 2
-            btnAddPDF.Visible = true;
-            btnModPDF.Visible = true;
-            btnDeletePDF.Visible = true;
-            btnSelectPDF.Visible = true;
-            btnSelectImg.Visible = true;
-            textBoxManualName.Visible = true;
-            textBoxManualID.Visible = true;
-            textBoxManualImg.Visible = true;
-            textBoxManualPATH.Visible = true;
-            lblAddFile.Visible = true;
 
-            // Hide other components if needed
-            btnAddUser.Visible = false;
-            btnModUser.Visible = false;
-            btnDeleteUser.Visible = false;
-            textBoxID.Visible = false;
-            textBoxUsername.Visible = false;
-            textBoxPW.Visible = false;
-            lblAddUser.Visible = false;
-            lblHome.Visible = false;
-            textBoxInstruct.Visible = false;
-            lblAddTask.Visible = false;
-            btnAddTask.Visible = false;
-            textBoxDUEDATE.Visible = false;
-            textBoxIDTASK.Visible = false;
-            textBoxTASK.Visible = false;
-            btnDeleteTask.Visible = false;
-            textBoxTID.Visible = false;
-            btnModifyTask.Visible = false;
-            btnDeleteUpdate.Visible = false;
-            btnAddUpdate.Visible = false;
-            lblUpdate.Visible = false;
-            textBoxUID.Visible = false;
-            textBoxUpdateText.Visible = false;
-            btnModUpdate.Visible = false;
+            ShowPDFControl();
+            HideUserControl();
+            HideTaskControl();
+            HideHome();
+            HideUpdateControl();
 
         }
 
         else if (e.ClickedItem == homeMenu)
         {
-            btnAddUser.Visible = false;
-            btnModUser.Visible = false;
-            btnDeleteUser.Visible = false;
-            textBoxID.Visible = false;
-            textBoxUsername.Visible = false;
-            textBoxPW.Visible = false;
-            lblAddUser.Visible = false;
-
-            btnAddPDF.Visible = false;
-            btnModPDF.Visible = false;
-            btnDeletePDF.Visible = false;
-            btnSelectPDF.Visible = false;
-            btnSelectImg.Visible = false;
-            textBoxManualName.Visible = false;
-            textBoxManualID.Visible = false;
-            textBoxManualImg.Visible = false;
-            textBoxManualPATH.Visible = false;
-            lblAddFile.Visible = false;
-            lblAddTask.Visible = false;
-            btnAddTask.Visible = false;
-            textBoxDUEDATE.Visible = false;
-            textBoxIDTASK.Visible = false;
-            textBoxTASK.Visible = false;
-            btnDeleteTask.Visible = false;
-            textBoxTID.Visible = false;
-            btnModifyTask.Visible = false;
-            btnDeleteUpdate.Visible = false;
-            btnAddUpdate.Visible = false;
-            lblUpdate.Visible = false;
-            textBoxUID.Visible = false;
-            textBoxUpdateText.Visible = false;
-            btnModUpdate.Visible = false;
-
-            lblHome.Visible = true;
-            this.textBoxInstruct.Visible = true;
+            HideUserControl();
+            HidePDFControl();
+            HideTaskControl();
+            ShowHome();
+            HideUpdateControl();
         }
 
         else if (e.ClickedItem == tasksDatabaseMenu)
         {
 
-            btnAddUser.Visible = false;
-            btnModUser.Visible = false;
-            btnDeleteUser.Visible = false;
-            textBoxID.Visible = false;
-            textBoxUsername.Visible = false;
-            textBoxPW.Visible = false;
-            lblAddUser.Visible = false;
+            HideUserControl();
+            HidePDFControl();
+            ShowTaskControl();
+            HideHome();
+            HideUpdateControl();
 
-            btnAddPDF.Visible = false;
-            btnModPDF.Visible = false;
-            btnDeletePDF.Visible = false;
-            btnSelectPDF.Visible = false;
-            btnSelectImg.Visible = false;
-            textBoxManualName.Visible = false;
-            textBoxManualID.Visible = false;
-            textBoxManualImg.Visible = false;
-            textBoxManualPATH.Visible = false;
-            lblAddFile.Visible = false;
-            btnDeleteUpdate.Visible = false;
-
-            lblHome.Visible = false;
-            this.textBoxInstruct.Visible = false;
-            btnAddUpdate.Visible = false;
-            lblUpdate.Visible = false;
-            textBoxUID.Visible = false;
-            textBoxUpdateText.Visible = false;
-            btnModUpdate.Visible = false;
-
-            lblAddTask.Visible = true;
-            btnAddTask.Visible = true;
-            textBoxDUEDATE.Visible = true;
-            textBoxIDTASK.Visible = true;
-            textBoxTASK.Visible = true;
-            btnDeleteTask.Visible = true;
-            textBoxTID.Visible = true;
-            btnModifyTask.Visible = true;
         }
 
         else if (e.ClickedItem == updateDatabaseMenu)
         {
 
+            HideUserControl();
+            HidePDFControl();
+            HideTaskControl();
+            HideHome();
+            ShowUpdateControl();
 
-            btnAddUser.Visible = false;
-            btnModUser.Visible = false;
-            btnDeleteUser.Visible = false;
-            textBoxID.Visible = false;
-            textBoxUsername.Visible = false;
-            textBoxPW.Visible = false;
-            lblAddUser.Visible = false;
-
-            btnAddPDF.Visible = false;
-            btnModPDF.Visible = false;
-            btnDeletePDF.Visible = false;
-            btnSelectPDF.Visible = false;
-            btnSelectImg.Visible = false;
-            textBoxManualName.Visible = false;
-            textBoxManualID.Visible = false;
-            textBoxManualImg.Visible = false;
-            textBoxManualPATH.Visible = false;
-            lblAddFile.Visible = false;
-
-            lblHome.Visible = false;
-            textBoxInstruct.Visible = false;
-
-            lblAddTask.Visible = false;
-            btnAddTask.Visible = false;
-            textBoxDUEDATE.Visible = false;
-            textBoxIDTASK.Visible = false;
-            textBoxTASK.Visible = false;
-            btnDeleteTask.Visible = false;
-            textBoxTID.Visible = false;
-            btnModifyTask.Visible = false;
-            btnDeleteUpdate.Visible = false;
-
-            lblUpdate.Visible = true;
-            btnDeleteUpdate.Visible = true;
-            btnAddUpdate.Visible = true;
-            textBoxUID.Visible = true;
-            textBoxUpdateText.Visible = true;
-            btnModUpdate.Visible = true;
         }
     }
 
