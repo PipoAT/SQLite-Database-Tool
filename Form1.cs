@@ -342,7 +342,8 @@ public partial class Form1 : Form
     }
 
 
-    public void btnDeleteTask_Click(object sender, EventArgs e) {
+    public void btnDeleteTask_Click(object sender, EventArgs e)
+    {
 
         var EmployeeUser = this.textBoxIDTASK.Text;
         var TID = this.textBoxTID.Text;
@@ -382,7 +383,8 @@ public partial class Form1 : Form
         }
     }
 
-    public void btnAddTask_Click(object sender, EventArgs e) {
+    public void btnAddTask_Click(object sender, EventArgs e)
+    {
 
         var EmployeeUser = this.textBoxIDTASK.Text;
         var EmployeeTask = this.textBoxTASK.Text;
@@ -426,7 +428,8 @@ public partial class Form1 : Form
         }
     }
 
-    public void btnModifyTask_Click(object sender, EventArgs e) {
+    public void btnModifyTask_Click(object sender, EventArgs e)
+    {
 
         var EmployeeUser = this.textBoxIDTASK.Text;
         var EmployeeTask = this.textBoxTASK.Text;
@@ -474,7 +477,123 @@ public partial class Form1 : Form
         }
     }
 
+    public void btnAddUpdate_Click(object sender, EventArgs e)
+    {
 
+        var UID = textBoxUID.Text;
+        var UpdateText = textBoxUpdateText.Text;
+
+        if (UID == "" || UpdateText == "")
+        {
+            MessageBox.Show("Please Input Data into All Fields and Submit Again", "ATTENTION", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+        }
+
+        else
+        {
+            // Connection string to SQLite database file
+            string connectionString = "Data Source=updates.db;Version=3;";
+
+            // Create a new connection object
+            SQLiteConnection connection = new SQLiteConnection(connectionString);
+
+            // Open the connection to the database
+            connection.Open();
+
+            // INSERT INTO TMANUAL, id, info, bytes SQL
+            using (SQLiteCommand cmd = new SQLiteCommand())
+            {
+                cmd.Connection = connection;
+                cmd.CommandText = "INSERT INTO updates (PID, TEXT) VALUES (@UID, @TEXT)";
+                cmd.Parameters.Add(new SQLiteParameter("@UID", UID));
+                cmd.Parameters.Add(new SQLiteParameter("@TEXT", UpdateText));
+                cmd.ExecuteNonQuery();
+            }
+
+            connection.Close();
+
+            textBoxUID.Text = "";
+            textBoxUpdateText.Text = "";
+        }
+
+    }
+
+    public void btnDeleteUpdate_Click(object sender, EventArgs e)
+    {
+        var UID = textBoxUID.Text;
+        var UpdateText = textBoxUpdateText.Text;
+
+        if (UID == "")
+        {
+            MessageBox.Show("Please Input Update ID and Submit Again", "ATTENTION", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+        }
+
+        else
+        {
+            // Connection string to SQLite database file
+            string connectionString = "Data Source=updates.db;Version=3;";
+
+            // Create a new connection object
+            SQLiteConnection connection = new SQLiteConnection(connectionString);
+
+            // Open the connection to the database
+            connection.Open();
+
+            // INSERT INTO TMANUAL, id, info, bytes SQL
+            using (SQLiteCommand cmd = new SQLiteCommand())
+            {
+                cmd.Connection = connection;
+                cmd.CommandText = "DELETE FROM updates WHERE PID = @UID";
+                cmd.Parameters.Add(new SQLiteParameter("@UID", UID));
+                cmd.ExecuteNonQuery();
+            }
+
+            connection.Close();
+
+            textBoxUID.Text = "";
+            textBoxUpdateText.Text = "";
+        }
+    }
+
+    public void btnModUpdate_Click(object sender, EventArgs e)
+    {
+        var UID = textBoxUID.Text;
+        var UpdateText = textBoxUpdateText.Text;
+
+        if (UID == "" || UpdateText == "")
+        {
+            MessageBox.Show("Please Input Data into All Fields and Submit Again", "ATTENTION", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+        }
+
+        else
+        {
+            // Connection string to SQLite database file
+            string connectionString = "Data Source=updates.db;Version=3;";
+
+            // Create a new connection object
+            SQLiteConnection connection = new SQLiteConnection(connectionString);
+
+            // Open the connection to the database
+            connection.Open();
+
+            // INSERT INTO TMANUAL, id, info, bytes SQL
+            using (SQLiteCommand cmd = new SQLiteCommand())
+            {
+                cmd.Connection = connection;
+                cmd.CommandText = "DELETE FROM updates WHERE PID = @UID";
+                cmd.Parameters.Add(new SQLiteParameter("@UID", UID));
+                cmd.ExecuteNonQuery();
+                cmd.CommandText = "INSERT INTO updates (PID, TEXT) VALUES (@UID, @TEXT)";
+                cmd.Parameters.Add(new SQLiteParameter("@UID", UID));
+                cmd.Parameters.Add(new SQLiteParameter("@TEXT", UpdateText));
+                cmd.ExecuteNonQuery();
+            }
+
+            connection.Close();
+
+            textBoxUID.Text = "";
+            textBoxUpdateText.Text = "";
+        }
+    }
 
     private void DatabaseMenu_DropDownItemClicked(object sender, ToolStripItemClickedEventArgs e)
     {
@@ -510,6 +629,12 @@ public partial class Form1 : Form
             btnDeleteTask.Visible = false;
             textBoxTID.Visible = false;
             btnModifyTask.Visible = false;
+            btnDeleteUpdate.Visible = false;
+            btnAddUpdate.Visible = false;
+            textBoxUID.Visible = false;
+            lblUpdate.Visible = false;
+            textBoxUpdateText.Visible = false;
+            btnModUpdate.Visible = false;
 
 
         }
@@ -545,6 +670,12 @@ public partial class Form1 : Form
             btnDeleteTask.Visible = false;
             textBoxTID.Visible = false;
             btnModifyTask.Visible = false;
+            btnDeleteUpdate.Visible = false;
+            btnAddUpdate.Visible = false;
+            lblUpdate.Visible = false;
+            textBoxUID.Visible = false;
+            textBoxUpdateText.Visible = false;
+            btnModUpdate.Visible = false;
 
         }
 
@@ -576,12 +707,61 @@ public partial class Form1 : Form
             btnDeleteTask.Visible = false;
             textBoxTID.Visible = false;
             btnModifyTask.Visible = false;
+            btnDeleteUpdate.Visible = false;
+            btnAddUpdate.Visible = false;
+            lblUpdate.Visible = false;
+            textBoxUID.Visible = false;
+            textBoxUpdateText.Visible = false;
+            btnModUpdate.Visible = false;
 
             lblHome.Visible = true;
             this.textBoxInstruct.Visible = true;
         }
 
-        else if (e.ClickedItem == tasksDatabaseMenu) {
+        else if (e.ClickedItem == tasksDatabaseMenu)
+        {
+
+            btnAddUser.Visible = false;
+            btnModUser.Visible = false;
+            btnDeleteUser.Visible = false;
+            textBoxID.Visible = false;
+            textBoxUsername.Visible = false;
+            textBoxPW.Visible = false;
+            lblAddUser.Visible = false;
+
+            btnAddPDF.Visible = false;
+            btnModPDF.Visible = false;
+            btnDeletePDF.Visible = false;
+            btnSelectPDF.Visible = false;
+            btnSelectImg.Visible = false;
+            textBoxManualName.Visible = false;
+            textBoxManualID.Visible = false;
+            textBoxManualImg.Visible = false;
+            textBoxManualPATH.Visible = false;
+            lblAddFile.Visible = false;
+            btnDeleteUpdate.Visible = false;
+
+            lblHome.Visible = false;
+            this.textBoxInstruct.Visible = false;
+            btnAddUpdate.Visible = false;
+            lblUpdate.Visible = false;
+            textBoxUID.Visible = false;
+            textBoxUpdateText.Visible = false;
+            btnModUpdate.Visible = false;
+
+            lblAddTask.Visible = true;
+            btnAddTask.Visible = true;
+            textBoxDUEDATE.Visible = true;
+            textBoxIDTASK.Visible = true;
+            textBoxTASK.Visible = true;
+            btnDeleteTask.Visible = true;
+            textBoxTID.Visible = true;
+            btnModifyTask.Visible = true;
+        }
+
+        else if (e.ClickedItem == updateDatabaseMenu)
+        {
+
 
             btnAddUser.Visible = false;
             btnModUser.Visible = false;
@@ -603,17 +783,25 @@ public partial class Form1 : Form
             lblAddFile.Visible = false;
 
             lblHome.Visible = false;
-            this.textBoxInstruct.Visible = false;
+            textBoxInstruct.Visible = false;
 
-            lblAddTask.Visible = true;
-            btnAddTask.Visible = true;
-            textBoxDUEDATE.Visible = true;
-            textBoxIDTASK.Visible = true;
-            textBoxTASK.Visible = true;
-            btnDeleteTask.Visible = true;
-            textBoxTID.Visible = true;
-            btnModifyTask.Visible = true;
+            lblAddTask.Visible = false;
+            btnAddTask.Visible = false;
+            textBoxDUEDATE.Visible = false;
+            textBoxIDTASK.Visible = false;
+            textBoxTASK.Visible = false;
+            btnDeleteTask.Visible = false;
+            textBoxTID.Visible = false;
+            btnModifyTask.Visible = false;
+            btnDeleteUpdate.Visible = false;
+
+            lblUpdate.Visible = true;
+            btnDeleteUpdate.Visible = true;
+            btnAddUpdate.Visible = true;
+            textBoxUID.Visible = true;
+            textBoxUpdateText.Visible = true;
+            btnModUpdate.Visible = true;
         }
     }
-    
+
 }

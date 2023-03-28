@@ -33,6 +33,7 @@ partial class Form1
         this.lblAddFile = new System.Windows.Forms.Label();
         this.lblAddTask = new System.Windows.Forms.Label();
         this.lblHome = new System.Windows.Forms.Label();
+        this.lblUpdate = new System.Windows.Forms.Label();
         this.textBoxID = new System.Windows.Forms.TextBox();
         this.textBoxInstruct = new System.Windows.Forms.RichTextBox();
         this.textBoxUsername = new System.Windows.Forms.TextBox();
@@ -45,6 +46,8 @@ partial class Form1
         this.textBoxTASK = new System.Windows.Forms.TextBox();
         this.textBoxDUEDATE = new System.Windows.Forms.TextBox();
         this.textBoxTID = new System.Windows.Forms.TextBox();
+        this.textBoxUID = new System.Windows.Forms.TextBox();
+        this.textBoxUpdateText = new System.Windows.Forms.TextBox();
         this.btnAddPDF = new System.Windows.Forms.Button();
         this.btnSelectImg = new System.Windows.Forms.Button();
         this.btnSelectPDF = new System.Windows.Forms.Button();
@@ -56,12 +59,16 @@ partial class Form1
         this.btnAddTask = new System.Windows.Forms.Button();
         this.btnDeleteTask = new System.Windows.Forms.Button();
         this.btnModifyTask = new System.Windows.Forms.Button();
+        this.btnAddUpdate = new System.Windows.Forms.Button();
+        this.btnDeleteUpdate = new System.Windows.Forms.Button();
+        this.btnModUpdate = new System.Windows.Forms.Button();
         this.SuspendLayout();
 
         this.homeMenu = new ToolStripMenuItem("&Home");
         this.userDatabaseMenu = new ToolStripMenuItem("&Users");
         this.manualDatabaseMenu = new ToolStripMenuItem("&Manuals");
         this.tasksDatabaseMenu = new ToolStripMenuItem("&Tasks");
+        this.updateDatabaseMenu = new ToolStripMenuItem("&Updates");
 
         this.textBoxInstruct.AutoSize = true;
         this.textBoxInstruct.Location = new System.Drawing.Point(150, 75);
@@ -141,6 +148,18 @@ partial class Form1
         this.textBoxDUEDATE.Visible = false;
         this.textBoxDUEDATE.Width = 325;
 
+        this.textBoxUID.AutoSize = true;
+        this.textBoxUID.Location = new System.Drawing.Point(20, 75);
+        this.textBoxUID.PlaceholderText = "UPDATE ID";
+        this.textBoxUID.Visible = false;
+        this.textBoxUID.Width = 325;
+
+        this.textBoxUpdateText.AutoSize = true;
+        this.textBoxUpdateText.Location = new System.Drawing.Point(20, 100);
+        this.textBoxUpdateText.PlaceholderText = "UPDATE TEXT";
+        this.textBoxUpdateText.Visible = false;
+        this.textBoxUpdateText.Width = 325;
+
 
         this.lblHome.Font = new System.Drawing.Font("Arial Rounded MT Bold", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
         this.lblHome.BackColor = Color.White;
@@ -183,6 +202,16 @@ partial class Form1
         this.lblAddTask.Text = "Modify Tasks Database";
         this.lblAddTask.TextAlign = ContentAlignment.MiddleCenter;
         this.lblAddTask.Visible = false;
+
+        this.lblUpdate.Font = new System.Drawing.Font("Arial Rounded MT Bold", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+        this.lblUpdate.BackColor = Color.White;
+        this.lblUpdate.Location = new System.Drawing.Point(0, 20);
+        this.lblUpdate.Name = "lblUpdate";
+        this.lblUpdate.Size = new System.Drawing.Size(510, 35);
+        this.lblUpdate.TabIndex = 8;
+        this.lblUpdate.Text = "Modify Update Database";
+        this.lblUpdate.TextAlign = ContentAlignment.MiddleCenter;
+        this.lblUpdate.Visible = false;
 
         this.btnSelectPDF.BackColor = System.Drawing.SystemColors.AppWorkspace;
         this.btnSelectPDF.FlatAppearance.BorderColor = System.Drawing.Color.Black;
@@ -326,11 +355,50 @@ partial class Form1
         this.btnDeleteTask.Visible = false;
         this.btnDeleteTask.Click += new System.EventHandler(this.btnDeleteTask_Click);
 
+        this.btnAddUpdate.BackColor = System.Drawing.SystemColors.AppWorkspace;
+        this.btnAddUpdate.FlatAppearance.BorderColor = System.Drawing.Color.Black;
+        this.btnAddUpdate.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+        this.btnAddUpdate.Font = new System.Drawing.Font("Arial Rounded MT Bold", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+        this.btnAddUpdate.Location = new System.Drawing.Point(350, 75);
+        this.btnAddUpdate.Name = "btnAddUpdate";
+        this.btnAddUpdate.Size = new System.Drawing.Size(137, 20);
+        this.btnAddUpdate.TabIndex = 3;
+        this.btnAddUpdate.Text = "Add Update";
+        this.btnAddUpdate.UseVisualStyleBackColor = false;
+        this.btnAddUpdate.Visible = false;
+        this.btnAddUpdate.Click += new System.EventHandler(this.btnAddUpdate_Click);
+
+        this.btnDeleteUpdate.BackColor = System.Drawing.SystemColors.AppWorkspace;
+        this.btnDeleteUpdate.FlatAppearance.BorderColor = System.Drawing.Color.Black;
+        this.btnDeleteUpdate.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+        this.btnDeleteUpdate.Font = new System.Drawing.Font("Arial Rounded MT Bold", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+        this.btnDeleteUpdate.Location = new System.Drawing.Point(350, 125);
+        this.btnDeleteUpdate.Name = "btnDeleteUpdate";
+        this.btnDeleteUpdate.Size = new System.Drawing.Size(137, 20);
+        this.btnDeleteUpdate.TabIndex = 3;
+        this.btnDeleteUpdate.Text = "Delete Update";
+        this.btnDeleteUpdate.UseVisualStyleBackColor = false;
+        this.btnDeleteUpdate.Visible = false;
+        this.btnDeleteUpdate.Click += new System.EventHandler(this.btnDeleteUpdate_Click);
+
+        this.btnModUpdate.BackColor = System.Drawing.SystemColors.AppWorkspace;
+        this.btnModUpdate.FlatAppearance.BorderColor = System.Drawing.Color.Black;
+        this.btnModUpdate.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+        this.btnModUpdate.Font = new System.Drawing.Font("Arial Rounded MT Bold", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+        this.btnModUpdate.Location = new System.Drawing.Point(350, 100);
+        this.btnModUpdate.Name = "btnModUpdate";
+        this.btnModUpdate.Size = new System.Drawing.Size(137, 20);
+        this.btnModUpdate.TabIndex = 3;
+        this.btnModUpdate.Text = "Modify Update";
+        this.btnModUpdate.UseVisualStyleBackColor = false;
+        this.btnModUpdate.Visible = false;
+        this.btnModUpdate.Click += new System.EventHandler(this.btnModUpdate_Click);
+
         // 
         // Form1
         // 
         menuStrip.Parent = this;
-        this.menuStrip.Items.AddRange(new ToolStripItem[] { homeMenu, userDatabaseMenu, manualDatabaseMenu, tasksDatabaseMenu});
+        this.menuStrip.Items.AddRange(new ToolStripItem[] { homeMenu, userDatabaseMenu, manualDatabaseMenu, tasksDatabaseMenu, updateDatabaseMenu});
         this.MainMenuStrip = menuStrip;
 
         this.menuStrip.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.DatabaseMenu_DropDownItemClicked);
@@ -345,6 +413,7 @@ partial class Form1
         this.Controls.Add(this.lblAddUser);
         this.Controls.Add(this.lblHome);
         this.Controls.Add(this.lblAddTask);
+        this.Controls.Add(this.lblUpdate);
         this.Controls.Add(this.textBoxInstruct);
         this.Controls.Add(this.textBoxID);
         this.Controls.Add(this.textBoxUsername);
@@ -364,10 +433,15 @@ partial class Form1
         this.Controls.Add(this.btnAddTask);
         this.Controls.Add(this.btnDeleteTask);
         this.Controls.Add(this.btnModifyTask);
+        this.Controls.Add(this.btnAddUpdate);
+        this.Controls.Add(this.btnDeleteUpdate);
         this.Controls.Add(this.textBoxIDTASK);
         this.Controls.Add(this.textBoxTASK);
         this.Controls.Add(this.textBoxDUEDATE);
         this.Controls.Add(this.textBoxTID);
+        this.Controls.Add(this.textBoxUID);
+        this.Controls.Add(this.textBoxUpdateText);
+        this.Controls.Add(this.btnModUpdate);
         this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
         this.MaximizeBox = false;
         this.MinimizeBox = true;
@@ -386,10 +460,12 @@ partial class Form1
     private ToolStripMenuItem userDatabaseMenu;
     private ToolStripMenuItem manualDatabaseMenu;
     private ToolStripMenuItem tasksDatabaseMenu;
+    private ToolStripMenuItem updateDatabaseMenu;
     private System.Windows.Forms.Label lblAddFile;
     private System.Windows.Forms.Label lblHome;
     private System.Windows.Forms.Label lblAddUser;
     private System.Windows.Forms.Label lblAddTask;
+    private System.Windows.Forms.Label lblUpdate;
     private System.Windows.Forms.RichTextBox textBoxInstruct;
     private System.Windows.Forms.TextBox textBoxID;
     private System.Windows.Forms.TextBox textBoxUsername;
@@ -402,6 +478,8 @@ partial class Form1
     private System.Windows.Forms.TextBox textBoxTASK;
     private System.Windows.Forms.TextBox textBoxDUEDATE;
     private System.Windows.Forms.TextBox textBoxTID;
+    private System.Windows.Forms.TextBox textBoxUID;
+    private System.Windows.Forms.TextBox textBoxUpdateText;
     private System.Windows.Forms.Button btnAddPDF;
     private System.Windows.Forms.Button btnSelectImg;
     private System.Windows.Forms.Button btnAddUser;
@@ -413,4 +491,7 @@ partial class Form1
     private System.Windows.Forms.Button btnAddTask;
     private System.Windows.Forms.Button btnDeleteTask;
     private System.Windows.Forms.Button btnModifyTask;
+    private System.Windows.Forms.Button btnAddUpdate;
+    private System.Windows.Forms.Button btnDeleteUpdate;
+    private System.Windows.Forms.Button btnModUpdate;
 }
