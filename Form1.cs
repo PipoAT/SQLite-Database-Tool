@@ -5,6 +5,13 @@ public partial class Form1 : Form
 {
     private string filePath = "";
     private string filePathImg = "";
+
+    public static readonly List<string> acceptableFileExtensions = new List<string>()
+    {
+        ".jpeg", ".jpg", ".bmp", ".doc", ".docx", ".png", ".jfif", ".pdf"
+    };
+
+
     public Form1()
     {
         InitializeComponent();
@@ -113,6 +120,7 @@ public partial class Form1 : Form
     {
         var ManualName = this.textBoxManualName.Text;
         var ManualID = this.textBoxManualID.Text;
+        string extension = Path.GetExtension(filePath);
 
         if (ManualName == "" || ManualID == "" || filePath == "" || filePathImg == "")
         {
@@ -121,47 +129,57 @@ public partial class Form1 : Form
 
         }
 
+
         else
         {
-
-            using (FileStream f = new FileStream(filePath, FileMode.Open))
+            if (acceptableFileExtensions.Contains(extension.ToLower()))
             {
-                using (FileStream fi = new FileStream(filePathImg, FileMode.Open))
+
+                using (FileStream f = new FileStream(filePath, FileMode.Open))
                 {
-
-                    BinaryReader binaryReader = new BinaryReader(f);
-                    var ImageData = binaryReader.ReadBytes((int)f.Length);
-                    BinaryReader binaryReaderimg = new BinaryReader(fi);
-                    var ImageDataImg = binaryReaderimg.ReadBytes((int)fi.Length);
-                    // Connection string to SQLite database file
-                    string connectionString = "Data Source=Manuals.db;Version=3;";
-
-                    // Create a new connection object
-                    SQLiteConnection connection = new SQLiteConnection(connectionString);
-
-                    // Open the connection to the database
-                    connection.Open();
-
-                    // INSERT INTO TMANUAL, id, info, bytes SQL
-                    using (SQLiteCommand cmd = new SQLiteCommand())
+                    using (FileStream fi = new FileStream(filePathImg, FileMode.Open))
                     {
-                        cmd.Connection = connection;
-                        cmd.CommandText = "INSERT INTO TMANUAL (PID, NAME, DATA, IMAGE) VALUES (@PID, @NAME, @DATA, @IMAGE)";
-                        cmd.Parameters.Add(new SQLiteParameter("@PID", ManualID));
-                        cmd.Parameters.Add(new SQLiteParameter("@NAME", ManualName));
-                        cmd.Parameters.Add(new SQLiteParameter("@DATA", ImageData));
-                        cmd.Parameters.Add(new SQLiteParameter("@IMAGE", ImageDataImg));
-                        cmd.ExecuteNonQuery();
+
+                        BinaryReader binaryReader = new BinaryReader(f);
+                        var ImageData = binaryReader.ReadBytes((int)f.Length);
+                        BinaryReader binaryReaderimg = new BinaryReader(fi);
+                        var ImageDataImg = binaryReaderimg.ReadBytes((int)fi.Length);
+                        // Connection string to SQLite database file
+                        string connectionString = "Data Source=Manuals.db;Version=3;";
+
+                        // Create a new connection object
+                        SQLiteConnection connection = new SQLiteConnection(connectionString);
+
+                        // Open the connection to the database
+                        connection.Open();
+
+                        // INSERT INTO TMANUAL, id, info, bytes SQL
+                        using (SQLiteCommand cmd = new SQLiteCommand())
+                        {
+                            cmd.Connection = connection;
+                            cmd.CommandText = "INSERT INTO TMANUAL (PID, NAME, DATA, IMAGE) VALUES (@PID, @NAME, @DATA, @IMAGE)";
+                            cmd.Parameters.Add(new SQLiteParameter("@PID", ManualID));
+                            cmd.Parameters.Add(new SQLiteParameter("@NAME", ManualName));
+                            cmd.Parameters.Add(new SQLiteParameter("@DATA", ImageData));
+                            cmd.Parameters.Add(new SQLiteParameter("@IMAGE", ImageDataImg));
+                            cmd.ExecuteNonQuery();
+                        }
+
+                        connection.Close();
                     }
-
-                    connection.Close();
                 }
-            }
 
-            textBoxManualID.Text = "";
-            textBoxManualImg.Text = "";
-            textBoxManualPATH.Text = "";
-            textBoxManualName.Text = "";
+
+                textBoxManualID.Text = "";
+                textBoxManualImg.Text = "";
+                textBoxManualPATH.Text = "";
+                textBoxManualName.Text = "";
+
+            }
+            else
+            {
+                MessageBox.Show("INVALID FILE TYPE. This application accepts .jpeg, .jpg, .bmp, .doc, .docx, .png, .jfif, .pdf", "ATTENTION", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
 
         }
 
