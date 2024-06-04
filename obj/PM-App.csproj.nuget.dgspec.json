@@ -1,30 +1,36 @@
 {
   "format": 1,
   "restore": {
-    "T:\\APIPO\\Dev\\C#\\PM-App\\PM-App.csproj": {}
+    "C:\\Users\\apmar\\OneDrive\\Desktop\\ATech\\SQLite-Database-Tool\\SQLite-Database-Tool\\PM-App.csproj": {}
   },
   "projects": {
-    "T:\\APIPO\\Dev\\C#\\PM-App\\PM-App.csproj": {
+    "C:\\Users\\apmar\\OneDrive\\Desktop\\ATech\\SQLite-Database-Tool\\SQLite-Database-Tool\\PM-App.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "T:\\APIPO\\Dev\\C#\\PM-App\\PM-App.csproj",
+        "projectUniqueName": "C:\\Users\\apmar\\OneDrive\\Desktop\\ATech\\SQLite-Database-Tool\\SQLite-Database-Tool\\PM-App.csproj",
         "projectName": "PM-App",
-        "projectPath": "T:\\APIPO\\Dev\\C#\\PM-App\\PM-App.csproj",
-        "packagesPath": "C:\\Users\\apipo\\.nuget\\packages\\",
-        "outputPath": "T:\\APIPO\\Dev\\C#\\PM-App\\obj\\",
+        "projectPath": "C:\\Users\\apmar\\OneDrive\\Desktop\\ATech\\SQLite-Database-Tool\\SQLite-Database-Tool\\PM-App.csproj",
+        "packagesPath": "C:\\Users\\apmar\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\apmar\\OneDrive\\Desktop\\ATech\\SQLite-Database-Tool\\SQLite-Database-Tool\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "C:\\Users\\apipo\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\apmar\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
-          "net7.0-windows"
+          "net8.0-windows"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
-          "net7.0-windows7.0": {
-            "targetAlias": "net7.0-windows",
+          "net8.0-windows7.0": {
+            "targetAlias": "net8.0-windows",
             "projectReferences": {}
           }
         },
@@ -32,11 +38,16 @@
           "warnAsError": [
             "NU1605"
           ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
         }
       },
       "frameworks": {
-        "net7.0-windows7.0": {
-          "targetAlias": "net7.0-windows",
+        "net8.0-windows7.0": {
+          "targetAlias": "net8.0-windows",
           "dependencies": {
             "System.Data.SQLite": {
               "target": "Package",
@@ -62,7 +73,7 @@
               "privateAssets": "none"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.102\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.204/PortableRuntimeIdentifierGraph.json"
         }
       }
     }
