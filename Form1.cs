@@ -1,10 +1,14 @@
 using System.Data.SQLite;
+using System.Data;
 namespace PM_App;
 
 public partial class Form1 : Form
 {
     private string filePath = "";
     private string filePathImg = "";
+    private string selectedDatabasePath = "";
+    private string selectedTable = "";
+    private DataTable? currentTableSchema = null;
 
     public static readonly List<string> acceptableFileExtensions = new List<string>()
     {
@@ -730,6 +734,7 @@ public partial class Form1 : Form
             HideTaskControl();
             HideHome();
             HideUpdateControl();
+            HideUniversalControl();
 
         }
         else if (e.ClickedItem == manualDatabaseMenu)
@@ -740,6 +745,7 @@ public partial class Form1 : Form
             HideTaskControl();
             HideHome();
             HideUpdateControl();
+            HideUniversalControl();
 
         }
 
@@ -750,6 +756,7 @@ public partial class Form1 : Form
             HideTaskControl();
             ShowHome();
             HideUpdateControl();
+            HideUniversalControl();
         }
 
         else if (e.ClickedItem == tasksDatabaseMenu)
@@ -760,6 +767,7 @@ public partial class Form1 : Form
             ShowTaskControl();
             HideHome();
             HideUpdateControl();
+            HideUniversalControl();
 
         }
 
@@ -771,6 +779,19 @@ public partial class Form1 : Form
             HideTaskControl();
             HideHome();
             ShowUpdateControl();
+            HideUniversalControl();
+
+        }
+
+        else if (e.ClickedItem == universalDatabaseMenu)
+        {
+
+            HideUserControl();
+            HidePDFControl();
+            HideTaskControl();
+            HideHome();
+            HideUpdateControl();
+            ShowUniversalControl();
 
         }
     }
@@ -809,5 +830,417 @@ public partial class Form1 : Form
         button.Location = new System.Drawing.Point(350, y);
         button.Click += clickHandler;
         button.Text = text;
+    }
+
+    // Universal Database Methods
+    private void btnSelectDatabase_Click(object sender, EventArgs e)
+    {
+        using (OpenFileDialog openFileDialog = new OpenFileDialog())
+        {
+            openFileDialog.InitialDirectory = Environment.CurrentDirectory;
+            openFileDialog.Filter = "SQLite Database Files (*.db)|*.db|All Files (*.*)|*.*";
+            openFileDialog.RestoreDirectory = true;
+
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                selectedDatabasePath = openFileDialog.FileName;
+                textBoxDatabasePath.Text = selectedDatabasePath;
+                LoadTablesFromDatabase();
+            }
+        }
+    }
+
+    private void LoadTablesFromDatabase()
+    {
+        if (string.IsNullOrEmpty(selectedDatabasePath))
+            return;
+
+        try
+        {
+            comboBoxTables.Items.Clear();
+            string connectionString = $"Data Source={selectedDatabasePath};Version=3;";
+            
+            using (SQLiteConnection connection = new SQLiteConnection(connectionString))
+            {
+                connection.Open();
+                DataTable tables = connection.GetSchema("Tables");
+                
+                foreach (DataRow row in tables.Rows)
+                {
+                    string? tableName = row["TABLE_NAME"].ToString();
+                    if (tableName != null && !tableName.StartsWith("sqlite_"))
+                    {
+                        comboBoxTables.Items.Add(tableName);
+                    }
+                }
+                
+                if (comboBoxTables.Items.Count > 0)
+                {
+                    comboBoxTables.SelectedIndex = 0;
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"Error loading tables: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
+    }
+
+    private void comboBoxTables_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        if (comboBoxTables.SelectedItem != null)
+        {
+            selectedTable = comboBoxTables.SelectedItem.ToString() ?? "";
+            LoadTableSchema();
+            LoadTableData();
+        }
+    }
+
+    private void LoadTableSchema()
+    {
+        if (string.IsNullOrEmpty(selectedDatabasePath) || string.IsNullOrEmpty(selectedTable))
+            return;
+
+        try
+        {
+            string connectionString = $"Data Source={selectedDatabasePath};Version=3;";
+            
+            using (SQLiteConnection connection = new SQLiteConnection(connectionString))
+            {
+                connection.Open();
+                string query = $"PRAGMA table_info({selectedTable})";
+                
+                using (SQLiteCommand cmd = new SQLiteCommand(query, connection))
+                using (SQLiteDataReader reader = cmd.ExecuteReader())
+                {
+                    currentTableSchema = new DataTable();
+                    currentTableSchema.Load(reader);
+                }
+            }
+            
+            GenerateDynamicFields();
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"Error loading schema: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
+    }
+
+    private void LoadTableData()
+    {
+        if (string.IsNullOrEmpty(selectedDatabasePath) || string.IsNullOrEmpty(selectedTable))
+            return;
+
+        try
+        {
+            string connectionString = $"Data Source={selectedDatabasePath};Version=3;";
+            
+            using (SQLiteConnection connection = new SQLiteConnection(connectionString))
+            {
+                connection.Open();
+                string query = $"SELECT * FROM {selectedTable}";
+                
+                using (SQLiteDataAdapter adapter = new SQLiteDataAdapter(query, connection))
+                {
+                    DataTable dataTable = new DataTable();
+                    adapter.Fill(dataTable);
+                    dataGridViewUniversal.DataSource = dataTable;
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"Error loading data: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
+    }
+
+    private void GenerateDynamicFields()
+    {
+        panelDynamicFields.Controls.Clear();
+        
+        if (currentTableSchema == null || currentTableSchema.Rows.Count == 0)
+            return;
+
+        int yPosition = 10;
+        
+        foreach (DataRow row in currentTableSchema.Rows)
+        {
+            string columnName = row["name"].ToString() ?? "";
+            string columnType = row["type"].ToString() ?? "";
+            
+            Label label = new Label
+            {
+                Text = columnName,
+                Location = new Point(10, yPosition),
+                Width = 150,
+                AutoSize = false
+            };
+            
+            TextBox textBox = new TextBox
+            {
+                Name = $"txt_{columnName}",
+                PlaceholderText = $"{columnName} ({columnType})",
+                Location = new Point(170, yPosition),
+                Width = 200
+            };
+            
+            panelDynamicFields.Controls.Add(label);
+            panelDynamicFields.Controls.Add(textBox);
+            
+            yPosition += 30;
+        }
+    }
+
+    private void btnUniversalAdd_Click(object sender, EventArgs e)
+    {
+        if (string.IsNullOrEmpty(selectedDatabasePath) || string.IsNullOrEmpty(selectedTable))
+        {
+            MessageBox.Show("Please select a database and table first.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            return;
+        }
+
+        try
+        {
+            List<string> columnNames = new List<string>();
+            List<object> values = new List<object>();
+            
+            foreach (Control control in panelDynamicFields.Controls)
+            {
+                if (control is TextBox textBox && textBox.Name.StartsWith("txt_"))
+                {
+                    string columnName = textBox.Name.Substring(4);
+                    columnNames.Add(columnName);
+                    values.Add(textBox.Text);
+                }
+            }
+            
+            if (columnNames.Count == 0)
+            {
+                MessageBox.Show("No fields to insert.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+            
+            string connectionString = $"Data Source={selectedDatabasePath};Version=3;";
+            string columns = string.Join(", ", columnNames);
+            string parameters = string.Join(", ", columnNames.Select(c => "@" + c));
+            string query = $"INSERT INTO {selectedTable} ({columns}) VALUES ({parameters})";
+            
+            using (SQLiteConnection connection = new SQLiteConnection(connectionString))
+            {
+                connection.Open();
+                
+                using (SQLiteCommand cmd = new SQLiteCommand(query, connection))
+                {
+                    for (int i = 0; i < columnNames.Count; i++)
+                    {
+                        cmd.Parameters.AddWithValue("@" + columnNames[i], values[i]);
+                    }
+                    
+                    cmd.ExecuteNonQuery();
+                }
+            }
+            
+            MessageBox.Show("Record added successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            LoadTableData();
+            ClearDynamicFields();
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"Error adding record: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
+    }
+
+    private void btnUniversalUpdate_Click(object sender, EventArgs e)
+    {
+        if (string.IsNullOrEmpty(selectedDatabasePath) || string.IsNullOrEmpty(selectedTable))
+        {
+            MessageBox.Show("Please select a database and table first.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            return;
+        }
+
+        if (dataGridViewUniversal.SelectedRows.Count == 0)
+        {
+            MessageBox.Show("Please select a row to update.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            return;
+        }
+
+        try
+        {
+            List<string> setParts = new List<string>();
+            List<object> values = new List<object>();
+            
+            foreach (Control control in panelDynamicFields.Controls)
+            {
+                if (control is TextBox textBox && textBox.Name.StartsWith("txt_") && !string.IsNullOrEmpty(textBox.Text))
+                {
+                    string columnName = textBox.Name.Substring(4);
+                    setParts.Add($"{columnName} = @{columnName}");
+                    values.Add(textBox.Text);
+                }
+            }
+            
+            if (setParts.Count == 0)
+            {
+                MessageBox.Show("No fields to update.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+            
+            // Get primary key or first column for WHERE clause
+            DataGridViewRow selectedRow = dataGridViewUniversal.SelectedRows[0];
+            string firstColumnName = dataGridViewUniversal.Columns[0].Name;
+            object firstColumnValue = selectedRow.Cells[0].Value;
+            
+            string connectionString = $"Data Source={selectedDatabasePath};Version=3;";
+            string setClause = string.Join(", ", setParts);
+            string query = $"UPDATE {selectedTable} SET {setClause} WHERE {firstColumnName} = @whereValue";
+            
+            using (SQLiteConnection connection = new SQLiteConnection(connectionString))
+            {
+                connection.Open();
+                
+                using (SQLiteCommand cmd = new SQLiteCommand(query, connection))
+                {
+                    int index = 0;
+                    foreach (Control control in panelDynamicFields.Controls)
+                    {
+                        if (control is TextBox textBox && textBox.Name.StartsWith("txt_") && !string.IsNullOrEmpty(textBox.Text))
+                        {
+                            string columnName = textBox.Name.Substring(4);
+                            cmd.Parameters.AddWithValue("@" + columnName, values[index]);
+                            index++;
+                        }
+                    }
+                    
+                    cmd.Parameters.AddWithValue("@whereValue", firstColumnValue);
+                    cmd.ExecuteNonQuery();
+                }
+            }
+            
+            MessageBox.Show("Record updated successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            LoadTableData();
+            ClearDynamicFields();
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"Error updating record: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
+    }
+
+    private void btnUniversalDelete_Click(object sender, EventArgs e)
+    {
+        if (string.IsNullOrEmpty(selectedDatabasePath) || string.IsNullOrEmpty(selectedTable))
+        {
+            MessageBox.Show("Please select a database and table first.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            return;
+        }
+
+        if (dataGridViewUniversal.SelectedRows.Count == 0)
+        {
+            MessageBox.Show("Please select a row to delete.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            return;
+        }
+
+        DialogResult result = MessageBox.Show("Are you sure you want to delete the selected record?", 
+            "Confirm Delete", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            
+        if (result != DialogResult.Yes)
+            return;
+
+        try
+        {
+            DataGridViewRow selectedRow = dataGridViewUniversal.SelectedRows[0];
+            string firstColumnName = dataGridViewUniversal.Columns[0].Name;
+            object firstColumnValue = selectedRow.Cells[0].Value;
+            
+            string connectionString = $"Data Source={selectedDatabasePath};Version=3;";
+            string query = $"DELETE FROM {selectedTable} WHERE {firstColumnName} = @whereValue";
+            
+            using (SQLiteConnection connection = new SQLiteConnection(connectionString))
+            {
+                connection.Open();
+                
+                using (SQLiteCommand cmd = new SQLiteCommand(query, connection))
+                {
+                    cmd.Parameters.AddWithValue("@whereValue", firstColumnValue);
+                    cmd.ExecuteNonQuery();
+                }
+            }
+            
+            MessageBox.Show("Record deleted successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            LoadTableData();
+            ClearDynamicFields();
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"Error deleting record: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
+    }
+
+    private void dataGridViewUniversal_SelectionChanged(object sender, EventArgs e)
+    {
+        if (dataGridViewUniversal.SelectedRows.Count > 0)
+        {
+            DataGridViewRow selectedRow = dataGridViewUniversal.SelectedRows[0];
+            
+            foreach (Control control in panelDynamicFields.Controls)
+            {
+                if (control is TextBox textBox && textBox.Name.StartsWith("txt_"))
+                {
+                    string columnName = textBox.Name.Substring(4);
+                    
+                    if (dataGridViewUniversal.Columns.Contains(columnName))
+                    {
+                        object cellValue = selectedRow.Cells[columnName].Value;
+                        textBox.Text = cellValue?.ToString() ?? "";
+                    }
+                }
+            }
+        }
+    }
+
+    private void ClearDynamicFields()
+    {
+        foreach (Control control in panelDynamicFields.Controls)
+        {
+            if (control is TextBox textBox)
+            {
+                textBox.Text = "";
+            }
+        }
+    }
+
+    private void btnRefreshData_Click(object sender, EventArgs e)
+    {
+        LoadTableData();
+    }
+
+    private void HideUniversalControl()
+    {
+        lblUniversal.Visible = false;
+        textBoxDatabasePath.Visible = false;
+        btnSelectDatabase.Visible = false;
+        comboBoxTables.Visible = false;
+        lblTableSelect.Visible = false;
+        panelDynamicFields.Visible = false;
+        dataGridViewUniversal.Visible = false;
+        btnUniversalAdd.Visible = false;
+        btnUniversalUpdate.Visible = false;
+        btnUniversalDelete.Visible = false;
+        btnRefreshData.Visible = false;
+    }
+
+    private void ShowUniversalControl()
+    {
+        lblUniversal.Visible = true;
+        textBoxDatabasePath.Visible = true;
+        btnSelectDatabase.Visible = true;
+        comboBoxTables.Visible = true;
+        lblTableSelect.Visible = true;
+        panelDynamicFields.Visible = true;
+        dataGridViewUniversal.Visible = true;
+        btnUniversalAdd.Visible = true;
+        btnUniversalUpdate.Visible = true;
+        btnUniversalDelete.Visible = true;
+        btnRefreshData.Visible = true;
     }
 }
