@@ -908,7 +908,15 @@ public partial class Form1 : Form
             using (SQLiteConnection connection = new SQLiteConnection(connectionString))
             {
                 connection.Open();
-                string query = $"PRAGMA table_info({selectedTable})";
+                
+                // Validate table exists
+                if (!IsValidTable(connection, selectedTable))
+                {
+                    MessageBox.Show("Invalid table name.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+                
+                string query = $"PRAGMA table_info([{selectedTable}])";
                 
                 using (SQLiteCommand cmd = new SQLiteCommand(query, connection))
                 using (SQLiteDataReader reader = cmd.ExecuteReader())
@@ -938,7 +946,15 @@ public partial class Form1 : Form
             using (SQLiteConnection connection = new SQLiteConnection(connectionString))
             {
                 connection.Open();
-                string query = $"SELECT * FROM {selectedTable}";
+                
+                // Validate table exists
+                if (!IsValidTable(connection, selectedTable))
+                {
+                    MessageBox.Show("Invalid table name.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+                
+                string query = $"SELECT * FROM [{selectedTable}]";
                 
                 using (SQLiteDataAdapter adapter = new SQLiteDataAdapter(query, connection))
                 {
@@ -1009,6 +1025,14 @@ public partial class Form1 : Form
                 if (control is TextBox textBox && textBox.Name.StartsWith("txt_"))
                 {
                     string columnName = textBox.Name.Substring(4);
+                    
+                    // Validate column name exists in schema
+                    if (!IsValidColumn(columnName))
+                    {
+                        MessageBox.Show($"Invalid column name: {columnName}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
+                    
                     columnNames.Add(columnName);
                     values.Add(textBox.Text);
                 }
@@ -1021,13 +1045,22 @@ public partial class Form1 : Form
             }
             
             string connectionString = $"Data Source={selectedDatabasePath};Version=3;";
-            string columns = string.Join(", ", columnNames);
-            string parameters = string.Join(", ", columnNames.Select(c => "@" + c));
-            string query = $"INSERT INTO {selectedTable} ({columns}) VALUES ({parameters})";
             
             using (SQLiteConnection connection = new SQLiteConnection(connectionString))
             {
                 connection.Open();
+                
+                // Validate table exists
+                if (!IsValidTable(connection, selectedTable))
+                {
+                    MessageBox.Show("Invalid table name.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+                
+                // Use brackets to safely quote identifiers
+                string columns = string.Join(", ", columnNames.Select(c => $"[{c}]"));
+                string parameters = string.Join(", ", columnNames.Select(c => "@" + c));
+                string query = $"INSERT INTO [{selectedTable}] ({columns}) VALUES ({parameters})";
                 
                 using (SQLiteCommand cmd = new SQLiteCommand(query, connection))
                 {
@@ -1067,6 +1100,7 @@ public partial class Form1 : Form
         try
         {
             List<string> setParts = new List<string>();
+            List<string> columnNames = new List<string>();
             List<object> values = new List<object>();
             
             foreach (Control control in panelDynamicFields.Controls)
@@ -1074,7 +1108,16 @@ public partial class Form1 : Form
                 if (control is TextBox textBox && textBox.Name.StartsWith("txt_") && !string.IsNullOrEmpty(textBox.Text))
                 {
                     string columnName = textBox.Name.Substring(4);
-                    setParts.Add($"{columnName} = @{columnName}");
+                    
+                    // Validate column name exists in schema
+                    if (!IsValidColumn(columnName))
+                    {
+                        MessageBox.Show($"Invalid column name: {columnName}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
+                    
+                    setParts.Add($"[{columnName}] = @{columnName}");
+                    columnNames.Add(columnName);
                     values.Add(textBox.Text);
                 }
             }
@@ -1085,33 +1128,47 @@ public partial class Form1 : Form
                 return;
             }
             
-            // Get primary key or first column for WHERE clause
+            // Get primary key column
+            string? pkColumn = GetPrimaryKeyColumn();
+            if (pkColumn == null)
+            {
+                MessageBox.Show("Cannot determine primary key for this table.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            
             DataGridViewRow selectedRow = dataGridViewUniversal.SelectedRows[0];
-            string firstColumnName = dataGridViewUniversal.Columns[0].Name;
-            object firstColumnValue = selectedRow.Cells[0].Value;
+            if (!dataGridViewUniversal.Columns.Contains(pkColumn))
+            {
+                MessageBox.Show($"Primary key column '{pkColumn}' not found in data.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            
+            object pkValue = selectedRow.Cells[pkColumn].Value;
             
             string connectionString = $"Data Source={selectedDatabasePath};Version=3;";
-            string setClause = string.Join(", ", setParts);
-            string query = $"UPDATE {selectedTable} SET {setClause} WHERE {firstColumnName} = @whereValue";
             
             using (SQLiteConnection connection = new SQLiteConnection(connectionString))
             {
                 connection.Open();
                 
+                // Validate table exists
+                if (!IsValidTable(connection, selectedTable))
+                {
+                    MessageBox.Show("Invalid table name.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+                
+                string setClause = string.Join(", ", setParts);
+                string query = $"UPDATE [{selectedTable}] SET {setClause} WHERE [{pkColumn}] = @whereValue";
+                
                 using (SQLiteCommand cmd = new SQLiteCommand(query, connection))
                 {
-                    int index = 0;
-                    foreach (Control control in panelDynamicFields.Controls)
+                    for (int i = 0; i < columnNames.Count; i++)
                     {
-                        if (control is TextBox textBox && textBox.Name.StartsWith("txt_") && !string.IsNullOrEmpty(textBox.Text))
-                        {
-                            string columnName = textBox.Name.Substring(4);
-                            cmd.Parameters.AddWithValue("@" + columnName, values[index]);
-                            index++;
-                        }
+                        cmd.Parameters.AddWithValue("@" + columnNames[i], values[i]);
                     }
                     
-                    cmd.Parameters.AddWithValue("@whereValue", firstColumnValue);
+                    cmd.Parameters.AddWithValue("@whereValue", pkValue);
                     cmd.ExecuteNonQuery();
                 }
             }
@@ -1148,20 +1205,41 @@ public partial class Form1 : Form
 
         try
         {
+            // Get primary key column
+            string? pkColumn = GetPrimaryKeyColumn();
+            if (pkColumn == null)
+            {
+                MessageBox.Show("Cannot determine primary key for this table.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            
             DataGridViewRow selectedRow = dataGridViewUniversal.SelectedRows[0];
-            string firstColumnName = dataGridViewUniversal.Columns[0].Name;
-            object firstColumnValue = selectedRow.Cells[0].Value;
+            if (!dataGridViewUniversal.Columns.Contains(pkColumn))
+            {
+                MessageBox.Show($"Primary key column '{pkColumn}' not found in data.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            
+            object pkValue = selectedRow.Cells[pkColumn].Value;
             
             string connectionString = $"Data Source={selectedDatabasePath};Version=3;";
-            string query = $"DELETE FROM {selectedTable} WHERE {firstColumnName} = @whereValue";
             
             using (SQLiteConnection connection = new SQLiteConnection(connectionString))
             {
                 connection.Open();
                 
+                // Validate table exists
+                if (!IsValidTable(connection, selectedTable))
+                {
+                    MessageBox.Show("Invalid table name.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+                
+                string query = $"DELETE FROM [{selectedTable}] WHERE [{pkColumn}] = @whereValue";
+                
                 using (SQLiteCommand cmd = new SQLiteCommand(query, connection))
                 {
-                    cmd.Parameters.AddWithValue("@whereValue", firstColumnValue);
+                    cmd.Parameters.AddWithValue("@whereValue", pkValue);
                     cmd.ExecuteNonQuery();
                 }
             }
@@ -1212,6 +1290,54 @@ public partial class Form1 : Form
     private void btnRefreshData_Click(object sender, EventArgs e)
     {
         LoadTableData();
+    }
+
+    private bool IsValidTable(SQLiteConnection connection, string tableName)
+    {
+        DataTable tables = connection.GetSchema("Tables");
+        foreach (DataRow row in tables.Rows)
+        {
+            string? existingTableName = row["TABLE_NAME"].ToString();
+            if (existingTableName != null && existingTableName.Equals(tableName, StringComparison.OrdinalIgnoreCase))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private bool IsValidColumn(string columnName)
+    {
+        if (currentTableSchema == null)
+            return false;
+            
+        foreach (DataRow row in currentTableSchema.Rows)
+        {
+            string? schemaColumnName = row["name"].ToString();
+            if (schemaColumnName != null && schemaColumnName.Equals(columnName, StringComparison.OrdinalIgnoreCase))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private string? GetPrimaryKeyColumn()
+    {
+        if (currentTableSchema == null || currentTableSchema.Rows.Count == 0)
+            return null;
+            
+        foreach (DataRow row in currentTableSchema.Rows)
+        {
+            int pk = Convert.ToInt32(row["pk"]);
+            if (pk > 0)
+            {
+                return row["name"].ToString();
+            }
+        }
+        
+        // If no primary key is defined, return the first column as fallback
+        return currentTableSchema.Rows[0]["name"].ToString();
     }
 
     private void HideUniversalControl()
