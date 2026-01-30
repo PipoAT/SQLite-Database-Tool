@@ -1215,7 +1215,7 @@
     ]
   },
   "packageFolders": {
-    "/home/runner/.nuget/packages/": {}
+    "/home/runner/work/SQLite-Database-Tool/.codeql-scratch/dbs/csharp/working/packages": {}
   },
   "project": {
     "version": "1.0.0",
@@ -1223,7 +1223,7 @@
       "projectUniqueName": "/home/runner/work/SQLite-Database-Tool/SQLite-Database-Tool/PM-App.csproj",
       "projectName": "PM-App",
       "projectPath": "/home/runner/work/SQLite-Database-Tool/SQLite-Database-Tool/PM-App.csproj",
-      "packagesPath": "/home/runner/.nuget/packages/",
+      "packagesPath": "/home/runner/work/SQLite-Database-Tool/.codeql-scratch/dbs/csharp/working/packages",
       "outputPath": "/home/runner/work/SQLite-Database-Tool/SQLite-Database-Tool/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
@@ -1274,6 +1274,18 @@
         "assetTargetFallback": true,
         "warn": true,
         "downloadDependencies": [
+          {
+            "name": "Microsoft.AspNetCore.App.Ref",
+            "version": "[8.0.23, 8.0.23]"
+          },
+          {
+            "name": "Microsoft.NETCore.App.Host.linux-x64",
+            "version": "[8.0.23, 8.0.23]"
+          },
+          {
+            "name": "Microsoft.NETCore.App.Ref",
+            "version": "[8.0.23, 8.0.23]"
+          },
           {
             "name": "Microsoft.WindowsDesktop.App.Ref",
             "version": "[8.0.23, 8.0.23]"
