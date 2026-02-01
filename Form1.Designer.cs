@@ -34,6 +34,8 @@ partial class Form1
         this.lblAddTask = new System.Windows.Forms.Label();
         this.lblHome = new System.Windows.Forms.Label();
         this.lblUpdate = new System.Windows.Forms.Label();
+        this.lblUniversal = new System.Windows.Forms.Label();
+        this.lblTableSelect = new System.Windows.Forms.Label();
         this.textBoxID = new System.Windows.Forms.TextBox();
         this.textBoxInstruct = new System.Windows.Forms.RichTextBox();
         this.textBoxUsername = new System.Windows.Forms.TextBox();
@@ -48,6 +50,10 @@ partial class Form1
         this.textBoxTID = new System.Windows.Forms.TextBox();
         this.textBoxUID = new System.Windows.Forms.TextBox();
         this.textBoxUpdateText = new System.Windows.Forms.TextBox();
+        this.textBoxDatabasePath = new System.Windows.Forms.TextBox();
+        this.comboBoxTables = new System.Windows.Forms.ComboBox();
+        this.panelDynamicFields = new System.Windows.Forms.Panel();
+        this.dataGridViewUniversal = new System.Windows.Forms.DataGridView();
         this.btnAddPDF = new System.Windows.Forms.Button();
         this.btnSelectImg = new System.Windows.Forms.Button();
         this.btnSelectPDF = new System.Windows.Forms.Button();
@@ -62,6 +68,12 @@ partial class Form1
         this.btnAddUpdate = new System.Windows.Forms.Button();
         this.btnDeleteUpdate = new System.Windows.Forms.Button();
         this.btnModUpdate = new System.Windows.Forms.Button();
+        this.btnSelectDatabase = new System.Windows.Forms.Button();
+        this.btnUniversalAdd = new System.Windows.Forms.Button();
+        this.btnUniversalUpdate = new System.Windows.Forms.Button();
+        this.btnUniversalDelete = new System.Windows.Forms.Button();
+        this.btnRefreshData = new System.Windows.Forms.Button();
+        ((System.ComponentModel.ISupportInitialize)(this.dataGridViewUniversal)).BeginInit();
         this.SuspendLayout();
 
         this.homeMenu = new ToolStripMenuItem("&Home");
@@ -69,6 +81,7 @@ partial class Form1
         this.manualDatabaseMenu = new ToolStripMenuItem("&Manuals");
         this.tasksDatabaseMenu = new ToolStripMenuItem("&Tasks");
         this.updateDatabaseMenu = new ToolStripMenuItem("&Updates");
+        this.universalDatabaseMenu = new ToolStripMenuItem("&Universal Database");
 
         this.textBoxInstruct.AutoSize = true;
         this.textBoxInstruct.Location = new System.Drawing.Point(150, 75);
@@ -95,12 +108,84 @@ partial class Form1
         SetupTextBox(textBoxUID, "UPDATE ID", 20, 75, 325, false);
         SetupTextBox(textBoxUpdateText, "UPDATE TEXT", 20, 100, 325, false);
 
+        // Universal Database Controls
+        textBoxDatabasePath.Location = new System.Drawing.Point(20, 75);
+        textBoxDatabasePath.Width = 400;
+        textBoxDatabasePath.ReadOnly = true;
+        textBoxDatabasePath.PlaceholderText = "Select a database file...";
+        textBoxDatabasePath.Visible = false;
+
+        btnSelectDatabase.Location = new System.Drawing.Point(425, 75);
+        btnSelectDatabase.Width = 137;
+        btnSelectDatabase.Height = 23;
+        btnSelectDatabase.Text = "Browse...";
+        btnSelectDatabase.Visible = false;
+        btnSelectDatabase.Click += btnSelectDatabase_Click;
+
+        lblTableSelect.Text = "Select Table:";
+        lblTableSelect.Location = new System.Drawing.Point(20, 105);
+        lblTableSelect.AutoSize = true;
+        lblTableSelect.Visible = false;
+
+        comboBoxTables.Location = new System.Drawing.Point(110, 105);
+        comboBoxTables.Width = 200;
+        comboBoxTables.DropDownStyle = ComboBoxStyle.DropDownList;
+        comboBoxTables.Visible = false;
+        comboBoxTables.SelectedIndexChanged += comboBoxTables_SelectedIndexChanged;
+
+        panelDynamicFields.Location = new System.Drawing.Point(20, 135);
+        panelDynamicFields.Width = 400;
+        panelDynamicFields.Height = 200;
+        panelDynamicFields.BorderStyle = BorderStyle.FixedSingle;
+        panelDynamicFields.AutoScroll = true;
+        panelDynamicFields.Visible = false;
+
+        dataGridViewUniversal.Location = new System.Drawing.Point(20, 340);
+        dataGridViewUniversal.Width = 740;
+        dataGridViewUniversal.Height = 200;
+        dataGridViewUniversal.ReadOnly = true;
+        dataGridViewUniversal.AllowUserToAddRows = false;
+        dataGridViewUniversal.AllowUserToDeleteRows = false;
+        dataGridViewUniversal.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+        dataGridViewUniversal.MultiSelect = false;
+        dataGridViewUniversal.Visible = false;
+        dataGridViewUniversal.SelectionChanged += dataGridViewUniversal_SelectionChanged;
+
+        btnUniversalAdd.Location = new System.Drawing.Point(425, 135);
+        btnUniversalAdd.Width = 100;
+        btnUniversalAdd.Height = 30;
+        btnUniversalAdd.Text = "Add";
+        btnUniversalAdd.Visible = false;
+        btnUniversalAdd.Click += btnUniversalAdd_Click;
+
+        btnUniversalUpdate.Location = new System.Drawing.Point(425, 170);
+        btnUniversalUpdate.Width = 100;
+        btnUniversalUpdate.Height = 30;
+        btnUniversalUpdate.Text = "Update";
+        btnUniversalUpdate.Visible = false;
+        btnUniversalUpdate.Click += btnUniversalUpdate_Click;
+
+        btnUniversalDelete.Location = new System.Drawing.Point(425, 205);
+        btnUniversalDelete.Width = 100;
+        btnUniversalDelete.Height = 30;
+        btnUniversalDelete.Text = "Delete";
+        btnUniversalDelete.Visible = false;
+        btnUniversalDelete.Click += btnUniversalDelete_Click;
+
+        btnRefreshData.Location = new System.Drawing.Point(425, 240);
+        btnRefreshData.Width = 100;
+        btnRefreshData.Height = 30;
+        btnRefreshData.Text = "Refresh";
+        btnRefreshData.Visible = false;
+        btnRefreshData.Click += btnRefreshData_Click;
+
 
         SetLabelProperties(lblHome, "Database Management Tool", true);
         SetLabelProperties(lblAddUser, "Modify User Database", false);
         SetLabelProperties(lblAddFile, "Modify Manual Database", false);
         SetLabelProperties(lblAddTask, "Modify Tasks Database", false);
         SetLabelProperties(lblUpdate, "Modify Update Database", false);
+        SetLabelProperties(lblUniversal, "Universal Database Tool", false);
 
         
         SetButton(btnSelectPDF, 75, selectfile_Click, "Select PDF");
@@ -123,7 +208,7 @@ partial class Form1
         // 
 
         menuStrip.Parent = this;
-        this.menuStrip.Items.AddRange(new ToolStripItem[] { homeMenu, userDatabaseMenu, manualDatabaseMenu, tasksDatabaseMenu, updateDatabaseMenu });
+        this.menuStrip.Items.AddRange(new ToolStripItem[] { homeMenu, userDatabaseMenu, manualDatabaseMenu, tasksDatabaseMenu, updateDatabaseMenu, universalDatabaseMenu });
         this.MainMenuStrip = menuStrip;
 
         this.menuStrip.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.DatabaseMenu_DropDownItemClicked);
@@ -132,12 +217,14 @@ partial class Form1
         this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
         this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
         this.BackColor = System.Drawing.ColorTranslator.FromHtml("#00457c");
-        this.ClientSize = new System.Drawing.Size(510, 225);
+        this.ClientSize = new System.Drawing.Size(780, 570);
         this.Controls.Add(this.lblAddFile);
         this.Controls.Add(this.lblAddUser);
         this.Controls.Add(this.lblHome);
         this.Controls.Add(this.lblAddTask);
         this.Controls.Add(this.lblUpdate);
+        this.Controls.Add(this.lblUniversal);
+        this.Controls.Add(this.lblTableSelect);
         this.Controls.Add(this.textBoxInstruct);
         this.Controls.Add(this.textBoxID);
         this.Controls.Add(this.textBoxUsername);
@@ -146,6 +233,10 @@ partial class Form1
         this.Controls.Add(this.textBoxManualID);
         this.Controls.Add(this.textBoxManualName);
         this.Controls.Add(this.textBoxManualImg);
+        this.Controls.Add(this.textBoxDatabasePath);
+        this.Controls.Add(this.comboBoxTables);
+        this.Controls.Add(this.panelDynamicFields);
+        this.Controls.Add(this.dataGridViewUniversal);
         this.Controls.Add(this.btnAddPDF);
         this.Controls.Add(this.btnAddUser);
         this.Controls.Add(this.btnModUser);
@@ -166,12 +257,18 @@ partial class Form1
         this.Controls.Add(this.textBoxUID);
         this.Controls.Add(this.textBoxUpdateText);
         this.Controls.Add(this.btnModUpdate);
+        this.Controls.Add(this.btnSelectDatabase);
+        this.Controls.Add(this.btnUniversalAdd);
+        this.Controls.Add(this.btnUniversalUpdate);
+        this.Controls.Add(this.btnUniversalDelete);
+        this.Controls.Add(this.btnRefreshData);
         this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
         this.MaximizeBox = false;
         this.MinimizeBox = true;
         this.Name = "Form1";
         this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
         this.Text = "SQLite Database Management Tool";
+        ((System.ComponentModel.ISupportInitialize)(this.dataGridViewUniversal)).EndInit();
         this.ResumeLayout(false);
         this.PerformLayout();
 
@@ -181,9 +278,9 @@ partial class Form1
 
     private MenuStrip menuStrip;
 
-    private ToolStripMenuItem homeMenu, userDatabaseMenu, manualDatabaseMenu, tasksDatabaseMenu, updateDatabaseMenu;
+    private ToolStripMenuItem homeMenu, userDatabaseMenu, manualDatabaseMenu, tasksDatabaseMenu, updateDatabaseMenu, universalDatabaseMenu;
 
-    private System.Windows.Forms.Label lblAddFile, lblHome, lblAddUser, lblAddTask, lblUpdate;
+    private System.Windows.Forms.Label lblAddFile, lblHome, lblAddUser, lblAddTask, lblUpdate, lblUniversal, lblTableSelect;
     
     private System.Windows.Forms.RichTextBox textBoxInstruct;
     private System.Windows.Forms.TextBox textBoxID;
@@ -199,6 +296,10 @@ partial class Form1
     private System.Windows.Forms.TextBox textBoxTID;
     private System.Windows.Forms.TextBox textBoxUID;
     private System.Windows.Forms.TextBox textBoxUpdateText;
+    private System.Windows.Forms.TextBox textBoxDatabasePath;
+    private System.Windows.Forms.ComboBox comboBoxTables;
+    private System.Windows.Forms.Panel panelDynamicFields;
+    private System.Windows.Forms.DataGridView dataGridViewUniversal;
     private System.Windows.Forms.Button btnAddPDF;
     private System.Windows.Forms.Button btnSelectImg;
     private System.Windows.Forms.Button btnAddUser;
@@ -213,4 +314,9 @@ partial class Form1
     private System.Windows.Forms.Button btnAddUpdate;
     private System.Windows.Forms.Button btnDeleteUpdate;
     private System.Windows.Forms.Button btnModUpdate;
+    private System.Windows.Forms.Button btnSelectDatabase;
+    private System.Windows.Forms.Button btnUniversalAdd;
+    private System.Windows.Forms.Button btnUniversalUpdate;
+    private System.Windows.Forms.Button btnUniversalDelete;
+    private System.Windows.Forms.Button btnRefreshData;
 }
