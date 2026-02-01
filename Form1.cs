@@ -9,6 +9,7 @@ public partial class Form1 : Form
     private string selectedDatabasePath = "";
     private string selectedTable = "";
     private DataTable? currentTableSchema = null;
+    private bool isLoadingData = false; // Flag to prevent event loops
 
     public static readonly List<string> acceptableFileExtensions = new List<string>()
     {
@@ -857,6 +858,7 @@ public partial class Form1 : Form
 
         try
         {
+            isLoadingData = true;
             comboBoxTables.Items.Clear();
             string connectionString = $"Data Source={selectedDatabasePath};Version=3;";
             
@@ -884,15 +886,31 @@ public partial class Form1 : Form
         {
             MessageBox.Show($"Error loading tables: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
+        finally
+        {
+            isLoadingData = false;
+        }
     }
 
     private void comboBoxTables_SelectedIndexChanged(object sender, EventArgs e)
     {
-        if (comboBoxTables.SelectedItem != null)
+        if (isLoadingData || comboBoxTables.SelectedItem == null)
+            return;
+
+        try
         {
+            isLoadingData = true;
             selectedTable = comboBoxTables.SelectedItem.ToString() ?? "";
             LoadTableSchema();
             LoadTableData();
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"Error loading table: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
+        finally
+        {
+            isLoadingData = false;
         }
     }
 
@@ -941,6 +959,9 @@ public partial class Form1 : Form
 
         try
         {
+            // Temporarily remove event handler to prevent infinite loop
+            dataGridViewUniversal.SelectionChanged -= dataGridViewUniversal_SelectionChanged;
+            
             string connectionString = $"Data Source={selectedDatabasePath};Version=3;";
             
             using (SQLiteConnection connection = new SQLiteConnection(connectionString))
@@ -967,6 +988,11 @@ public partial class Form1 : Form
         catch (Exception ex)
         {
             MessageBox.Show($"Error loading data: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
+        finally
+        {
+            // Re-attach event handler
+            dataGridViewUniversal.SelectionChanged += dataGridViewUniversal_SelectionChanged;
         }
     }
 
@@ -1015,8 +1041,16 @@ public partial class Form1 : Form
             return;
         }
 
+        if (isLoadingData)
+        {
+            MessageBox.Show("Please wait for the current operation to complete.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            return;
+        }
+
         try
         {
+            isLoadingData = true;
+            
             List<string> columnNames = new List<string>();
             List<object> values = new List<object>();
             
@@ -1081,6 +1115,10 @@ public partial class Form1 : Form
         {
             MessageBox.Show($"Error adding record: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
+        finally
+        {
+            isLoadingData = false;
+        }
     }
 
     private void btnUniversalUpdate_Click(object sender, EventArgs e)
@@ -1088,6 +1126,12 @@ public partial class Form1 : Form
         if (string.IsNullOrEmpty(selectedDatabasePath) || string.IsNullOrEmpty(selectedTable))
         {
             MessageBox.Show("Please select a database and table first.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            return;
+        }
+
+        if (isLoadingData)
+        {
+            MessageBox.Show("Please wait for the current operation to complete.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             return;
         }
 
@@ -1099,6 +1143,8 @@ public partial class Form1 : Form
 
         try
         {
+            isLoadingData = true;
+            
             List<string> setParts = new List<string>();
             List<string> columnNames = new List<string>();
             List<object> values = new List<object>();
@@ -1143,7 +1189,7 @@ public partial class Form1 : Form
                 return;
             }
             
-            object pkValue = selectedRow.Cells[pkColumn].Value;
+            object? pkValue = selectedRow.Cells[pkColumn].Value;
             
             string connectionString = $"Data Source={selectedDatabasePath};Version=3;";
             
@@ -1181,6 +1227,10 @@ public partial class Form1 : Form
         {
             MessageBox.Show($"Error updating record: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
+        finally
+        {
+            isLoadingData = false;
+        }
     }
 
     private void btnUniversalDelete_Click(object sender, EventArgs e)
@@ -1188,6 +1238,12 @@ public partial class Form1 : Form
         if (string.IsNullOrEmpty(selectedDatabasePath) || string.IsNullOrEmpty(selectedTable))
         {
             MessageBox.Show("Please select a database and table first.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            return;
+        }
+
+        if (isLoadingData)
+        {
+            MessageBox.Show("Please wait for the current operation to complete.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             return;
         }
 
@@ -1205,6 +1261,8 @@ public partial class Form1 : Form
 
         try
         {
+            isLoadingData = true;
+            
             // Get primary key column
             string? pkColumn = GetPrimaryKeyColumn();
             if (pkColumn == null)
@@ -1220,7 +1278,7 @@ public partial class Form1 : Form
                 return;
             }
             
-            object pkValue = selectedRow.Cells[pkColumn].Value;
+            object? pkValue = selectedRow.Cells[pkColumn].Value;
             
             string connectionString = $"Data Source={selectedDatabasePath};Version=3;";
             
@@ -1252,11 +1310,24 @@ public partial class Form1 : Form
         {
             MessageBox.Show($"Error deleting record: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
+        finally
+        {
+            isLoadingData = false;
+        }
     }
 
-    private void dataGridViewUniversal_SelectionChanged(object sender, EventArgs e)
+    private void dataGridViewUniversal_SelectionChanged(object? sender, EventArgs e)
     {
-        if (dataGridViewUniversal.SelectedRows.Count > 0)
+        // Don't process if we're in the middle of loading data
+        if (isLoadingData)
+            return;
+
+        // Don't process if no rows or columns available
+        if (dataGridViewUniversal.SelectedRows.Count == 0 || 
+            dataGridViewUniversal.Columns.Count == 0)
+            return;
+
+        try
         {
             DataGridViewRow selectedRow = dataGridViewUniversal.SelectedRows[0];
             
@@ -1268,11 +1339,17 @@ public partial class Form1 : Form
                     
                     if (dataGridViewUniversal.Columns.Contains(columnName))
                     {
-                        object cellValue = selectedRow.Cells[columnName].Value;
+                        object? cellValue = selectedRow.Cells[columnName].Value;
                         textBox.Text = cellValue?.ToString() ?? "";
                     }
                 }
             }
+        }
+        catch (Exception ex)
+        {
+            // Silently ignore errors during selection changed to prevent popup spam
+            // Log or debug if needed, but don't show to user
+            System.Diagnostics.Debug.WriteLine($"Selection changed error: {ex.Message}");
         }
     }
 
